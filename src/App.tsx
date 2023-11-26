@@ -40,9 +40,7 @@ import {
   findFirstUnusedReveal,
   isWinningWord,
   isWordInWordList,
-  setGameDate,
   solution,
-  solutionGameDate,
   unicodeLength,
 } from "./lib/words";
 

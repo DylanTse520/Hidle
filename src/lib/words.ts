@@ -1,4 +1,4 @@
-import { addDays, differenceInDays, formatISO, startOfDay } from "date-fns";
+import { addDays, differenceInDays, startOfDay } from "date-fns";
 import { default as GraphemeSplitter } from "grapheme-splitter";
 
 import {
@@ -119,23 +119,9 @@ export const getSolution = (gameDate: Date) => {
   const wordOfTheDay = getWordOfDay(index);
   return {
     solution: wordOfTheDay,
-    solutionGameDate: gameDate,
     solutionIndex: index,
     tomorrow: nextGameDate.valueOf(),
   };
 };
 
-export const setGameDate = (d: Date) => {
-  try {
-    if (d < getToday()) {
-      window.location.href = "/?d=" + formatISO(d, { representation: "date" });
-      return;
-    }
-  } catch (e) {
-    console.log(e);
-  }
-  window.location.href = "/";
-};
-
-export const { solution, solutionGameDate, solutionIndex, tomorrow } =
-  getSolution(getToday());
+export const { solution, solutionIndex, tomorrow } = getSolution(getToday());
