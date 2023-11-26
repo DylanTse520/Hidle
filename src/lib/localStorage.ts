@@ -39,7 +39,7 @@ export const loadStatsFromLocalStorage = () => {
 
 export const setStoredIsHighContrastMode = (isHighContrast: boolean) => {
   if (isHighContrast) {
-    localStorage.setItem(highContrastKey, "1");
+    localStorage.setItem(highContrastKey, "true");
   } else {
     localStorage.removeItem(highContrastKey);
   }
@@ -47,5 +47,5 @@ export const setStoredIsHighContrastMode = (isHighContrast: boolean) => {
 
 export const getStoredIsHighContrastMode = () => {
   const highContrast = localStorage.getItem(highContrastKey);
-  return highContrast === "1";
+  return highContrast === "true";
 };

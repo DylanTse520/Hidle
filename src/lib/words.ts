@@ -1,4 +1,4 @@
-import { addDays, differenceInDays, startOfDay } from "date-fns";
+import { addDays, differenceInDays, startOfDay, startOfToday } from "date-fns";
 import { default as GraphemeSplitter } from "grapheme-splitter";
 
 import {
@@ -7,7 +7,6 @@ import {
 } from "../constants/strings";
 import { VALID_GUESSES } from "../constants/validGuesses";
 import { WORDS } from "../constants/wordlist";
-import { getToday } from "./dateutils";
 import { getGuessStatuses } from "./statuses";
 
 // 1 January 2022 Game Epoch
@@ -113,15 +112,16 @@ export const getWordOfDay = (index: number) => {
   return localeAwareUpperCase(WORDS[index % WORDS.length]);
 };
 
-export const getSolution = (gameDate: Date) => {
+export const getSolution = () => {
+  const gameDate = startOfToday();
+
   const nextGameDate = getNextGameDate(gameDate);
   const index = getIndex(gameDate);
   const wordOfTheDay = getWordOfDay(index);
   return {
     solution: wordOfTheDay,
-    solutionIndex: index,
     tomorrow: nextGameDate.valueOf(),
   };
 };
 
-export const { solution, solutionIndex, tomorrow } = getSolution(getToday());
+export const { solution, tomorrow } = getSolution();

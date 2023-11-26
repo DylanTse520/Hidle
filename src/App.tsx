@@ -53,13 +53,13 @@ function App() {
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert();
   const [currentGuess, setCurrentGuess] = useState("");
+  const [currentRowClass, setCurrentRowClass] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
+  const [isGameLost, setIsGameLost] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isMigrateStatsModalOpen, setIsMigrateStatsModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [currentRowClass, setCurrentRowClass] = useState("");
-  const [isGameLost, setIsGameLost] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
@@ -264,7 +264,7 @@ function App() {
 
   return (
     <Div100vh>
-      <div className="flex h-full flex-col dark:bg-slate-800">
+      <div className="flex h-full flex-col dark:bg-slate-900">
         <Navbar
           setIsInfoModalOpen={setIsInfoModalOpen}
           setIsStatsModalOpen={setIsStatsModalOpen}
