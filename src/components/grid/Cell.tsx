@@ -1,8 +1,8 @@
 import classnames from "classnames";
 
 import { REVEAL_TIME_MS } from "../../constants/settings";
-import { getStoredIsHighContrastMode } from "../../lib/localStorage";
-import { CharStatus } from "../../lib/statuses";
+import { getStoredIsHighContrastMode } from "../../utils/localStorage";
+import { CharStatus } from "../../utils/statuses";
 
 type Props = {
   value?: string;

@@ -8,8 +8,8 @@ import {
   SHARE_TEXT,
   STATISTICS_TITLE,
 } from "../../constants/strings";
-import { GameStats } from "../../lib/localStorage";
-import { tomorrow } from "../../lib/words";
+import { GameStats } from "../../utils/localStorage";
+import { tomorrow } from "../../utils/words";
 import { Histogram } from "../stats/Histogram";
 import { MigrationIntro } from "../stats/MigrationIntro";
 import { StatBar } from "../stats/StatBar";

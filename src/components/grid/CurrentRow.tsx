@@ -1,4 +1,4 @@
-import { solution, unicodeSplit } from "../../lib/words";
+import { solution, unicodeSplit } from "../../utils/words";
 import { Cell } from "./Cell";
 
 type Props = {

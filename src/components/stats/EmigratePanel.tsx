@@ -1,10 +1,10 @@
 import { DuplicateIcon } from "@heroicons/react/outline";
 import { useState } from "react";
 
-import { copyTextToClipboard } from "../../lib/clipboard";
-import { encrypt } from "../../lib/encryption";
-import { loadGameStateFromLocalStorage } from "../../lib/localStorage";
-import { loadStats } from "../../lib/stats";
+import { copyTextToClipboard } from "../../utils/clipboard";
+import { encrypt } from "../../utils/encryption";
+import { loadGameStateFromLocalStorage } from "../../utils/localStorage";
+import { loadStats } from "../../utils/stats";
 import { MigrationStats } from "../modals/MigrateStatsModal";
 
 export const EmigratePanel = () => {

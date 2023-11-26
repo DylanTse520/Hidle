@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
 import { DELETE_TEXT, ENTER_TEXT } from "../../constants/strings";
-import { getStatuses } from "../../lib/statuses";
-import { localeAwareUpperCase } from "../../lib/words";
+import { getStatuses } from "../../utils/statuses";
+import { localeAwareUpperCase } from "../../utils/words";
 import { Key } from "./Key";
 
 type Props = {

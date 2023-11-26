@@ -28,21 +28,21 @@ import {
   WORD_NOT_FOUND_MESSAGE,
 } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
-import { isInAppBrowser } from "./lib/browser";
+import { isInAppBrowser } from "./utils/browser";
 import {
   getStoredIsHighContrastMode,
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
   setStoredIsHighContrastMode,
-} from "./lib/localStorage";
-import { addStatsForCompletedGame, loadStats } from "./lib/stats";
+} from "./utils/localStorage";
+import { addStatsForCompletedGame, loadStats } from "./utils/stats";
 import {
   findFirstUnusedReveal,
   isWinningWord,
   isWordInWordList,
   solution,
   unicodeLength,
-} from "./lib/words";
+} from "./utils/words";
 
 function App() {
   const isLatestGame = true;
