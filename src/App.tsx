@@ -12,7 +12,6 @@ import { StatsModal } from "./components/modals/StatsModal";
 import { Navbar } from "./components/navbar/Navbar";
 import {
   DISCOURAGE_INAPP_BROWSERS,
-  LONG_ALERT_TIME_MS,
   MAX_CHALLENGES,
   REVEAL_TIME_MS,
   WELCOME_INFO_MODAL_MS,
@@ -20,10 +19,7 @@ import {
 import {
   CORRECT_WORD_MESSAGE,
   DISCOURAGE_INAPP_BROWSER_TEXT,
-  GAME_COPIED_MESSAGE,
-  HARD_MODE_ALERT_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
-  SHARE_FAILURE_TEXT,
   WIN_MESSAGES,
   WORD_NOT_FOUND_MESSAGE,
 } from "./constants/strings";
@@ -37,7 +33,6 @@ import {
 } from "./utils/localStorage";
 import { addStatsForCompletedGame, loadStats } from "./utils/stats";
 import {
-  findFirstUnusedReveal,
   isWinningWord,
   isWordInWordList,
   solution,
@@ -91,12 +86,6 @@ function App() {
 
   const [stats, setStats] = useState(() => loadStats());
 
-  const [isHardMode, setIsHardMode] = useState(
-    localStorage.getItem("gameMode")
-      ? localStorage.getItem("gameMode") === "hard"
-      : false
-  );
-
   useEffect(() => {
     // if no game state on load,
     // show the user the how-to info modal
@@ -133,15 +122,6 @@ function App() {
   const handleDarkMode = (isDark: boolean) => {
     setIsDarkMode(isDark);
     localStorage.setItem("theme", isDark ? "dark" : "light");
-  };
-
-  const handleHardMode = (isHard: boolean) => {
-    if (guesses.length === 0 || localStorage.getItem("gameMode") === "hard") {
-      setIsHardMode(isHard);
-      localStorage.setItem("gameMode", isHard ? "hard" : "normal");
-    } else {
-      showErrorAlert(HARD_MODE_ALERT_MESSAGE);
-    }
   };
 
   const handleHighContrastMode = (isHighContrast: boolean) => {
@@ -212,17 +192,6 @@ function App() {
       return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
         onClose: clearCurrentRowClass,
       });
-    }
-
-    // enforce hard mode - all guesses must contain all previously revealed letters
-    if (isHardMode) {
-      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses);
-      if (firstMissingReveal) {
-        setCurrentRowClass("jiggle");
-        return showErrorAlert(firstMissingReveal, {
-          onClose: clearCurrentRowClass,
-        });
-      }
     }
 
     setIsRevealing(true);
@@ -296,25 +265,14 @@ function App() {
           <StatsModal
             isOpen={isStatsModalOpen}
             handleClose={() => setIsStatsModalOpen(false)}
-            solution={solution}
-            guesses={guesses}
             gameStats={stats}
             isLatestGame={isLatestGame}
             isGameLost={isGameLost}
             isGameWon={isGameWon}
-            handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-            handleShareFailure={() =>
-              showErrorAlert(SHARE_FAILURE_TEXT, {
-                durationMs: LONG_ALERT_TIME_MS,
-              })
-            }
             handleMigrateStatsButton={() => {
               setIsStatsModalOpen(false);
               setIsMigrateStatsModalOpen(true);
             }}
-            isHardMode={isHardMode}
-            isDarkMode={isDarkMode}
-            isHighContrastMode={isHighContrastMode}
             numberOfGuessesMade={guesses.length}
           />
           <MigrateStatsModal
@@ -324,8 +282,6 @@ function App() {
           <SettingsModal
             isOpen={isSettingsModalOpen}
             handleClose={() => setIsSettingsModalOpen(false)}
-            isHardMode={isHardMode}
-            handleHardMode={handleHardMode}
             isDarkMode={isDarkMode}
             handleDarkMode={handleDarkMode}
             isHighContrastMode={isHighContrastMode}

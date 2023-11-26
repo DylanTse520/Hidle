@@ -3,8 +3,7 @@ import {
   CogIcon,
   InformationCircleIcon,
 } from "@heroicons/react/outline";
-
-import { GAME_TITLE } from "../../constants/strings";
+import { GAME_TITLE } from "src/constants/strings";
 
 export const Navbar = ({
   setIsInfoModalOpen,

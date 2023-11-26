@@ -1,55 +1,39 @@
 import { ShareIcon } from "@heroicons/react/outline";
 import Countdown from "react-countdown";
-
-import { ENABLE_MIGRATE_STATS } from "../../constants/settings";
+import { ENABLE_MIGRATE_STATS } from "src/constants/settings";
 import {
   GUESS_DISTRIBUTION_TEXT,
   NEW_WORD_TEXT,
   SHARE_TEXT,
   STATISTICS_TITLE,
-} from "../../constants/strings";
-import { GameStats } from "../../utils/localStorage";
-import { tomorrow } from "../../utils/words";
+} from "src/constants/strings";
+import { GameStats } from "src/utils/localStorage";
+import { tomorrow } from "src/utils/words";
+
 import { Histogram } from "../stats/Histogram";
 import { MigrationIntro } from "../stats/MigrationIntro";
 import { StatBar } from "../stats/StatBar";
 import { BaseModal } from "./BaseModal";
 
-type Props = {
-  isOpen: boolean;
-  handleClose: () => void;
-  solution: string;
-  guesses: string[];
-  gameStats: GameStats;
-  isLatestGame: boolean;
-  isGameLost: boolean;
-  isGameWon: boolean;
-  handleShareToClipboard: () => void;
-  handleShareFailure: () => void;
-  handleMigrateStatsButton: () => void;
-  isHardMode: boolean;
-  isDarkMode: boolean;
-  isHighContrastMode: boolean;
-  numberOfGuessesMade: number;
-};
-
 export const StatsModal = ({
   isOpen,
   handleClose,
-  solution,
-  guesses,
   gameStats,
   isLatestGame,
   isGameLost,
   isGameWon,
-  handleShareToClipboard,
-  handleShareFailure,
   handleMigrateStatsButton,
-  isHardMode,
-  isDarkMode,
-  isHighContrastMode,
   numberOfGuessesMade,
-}: Props) => {
+}: {
+  isOpen: boolean;
+  handleClose: () => void;
+  gameStats: GameStats;
+  isLatestGame: boolean;
+  isGameLost: boolean;
+  isGameWon: boolean;
+  handleMigrateStatsButton: () => void;
+  numberOfGuessesMade: number;
+}) => {
   if (gameStats.totalGames <= 0) {
     return (
       <BaseModal

@@ -1,5 +1,6 @@
-import { getGuessStatuses } from "../../utils/statuses";
-import { unicodeSplit } from "../../utils/words";
+import { getGuessStatuses } from "src/utils/statuses";
+import { unicodeSplit } from "src/utils/words";
+
 import { Cell } from "./Cell";
 
 type Props = {

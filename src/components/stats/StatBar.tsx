@@ -3,8 +3,8 @@ import {
   CURRENT_STREAK_TEXT,
   SUCCESS_RATE_TEXT,
   TOTAL_TRIES_TEXT,
-} from "../../constants/strings";
-import { GameStats } from "../../utils/localStorage";
+} from "src/constants/strings";
+import { GameStats } from "src/utils/localStorage";
 
 type Props = {
   gameStats: GameStats;

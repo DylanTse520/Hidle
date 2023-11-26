@@ -1,10 +1,9 @@
 import classnames from "classnames";
 import { ReactNode } from "react";
-
-import { REVEAL_TIME_MS } from "../../constants/settings";
-import { getStoredIsHighContrastMode } from "../../utils/localStorage";
-import { CharStatus } from "../../utils/statuses";
-import { solution } from "../../utils/words";
+import { REVEAL_TIME_MS } from "src/constants/settings";
+import { getStoredIsHighContrastMode } from "src/utils/localStorage";
+import { CharStatus } from "src/utils/statuses";
+import { solution } from "src/utils/words";
 
 type Props = {
   children?: ReactNode;

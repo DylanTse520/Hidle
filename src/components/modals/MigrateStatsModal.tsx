@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { GameStats, StoredGameState } from "src/utils/localStorage";
 
-import { GameStats, StoredGameState } from "../../utils/localStorage";
 import { EmigratePanel } from "../stats/EmigratePanel";
 import { ImmigratePanel } from "../stats/ImmigratePanel";
 import { BaseModal } from "./BaseModal";

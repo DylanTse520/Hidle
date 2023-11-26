@@ -1,11 +1,11 @@
 import { SaveIcon } from "@heroicons/react/outline";
 import { useState } from "react";
-
-import { decrypt } from "../../utils/encryption";
+import { decrypt } from "src/utils/encryption";
 import {
   saveGameStateToLocalStorage,
   saveStatsToLocalStorage,
-} from "../../utils/localStorage";
+} from "src/utils/localStorage";
+
 import { MigrationStats } from "../modals/MigrateStatsModal";
 
 export const ImmigratePanel = () => {
