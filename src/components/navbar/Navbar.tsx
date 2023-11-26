@@ -3,17 +3,17 @@ import {
   ChartBarIcon,
   CogIcon,
   InformationCircleIcon,
-} from '@heroicons/react/outline'
+} from "@heroicons/react/outline";
 
-import { ENABLE_ARCHIVED_GAMES } from '../../constants/settings'
-import { GAME_TITLE } from '../../constants/strings'
+import { ENABLE_ARCHIVED_GAMES } from "../../constants/settings";
+import { GAME_TITLE } from "../../constants/strings";
 
 type Props = {
-  setIsInfoModalOpen: (value: boolean) => void
-  setIsStatsModalOpen: (value: boolean) => void
-  setIsDatePickerModalOpen: (value: boolean) => void
-  setIsSettingsModalOpen: (value: boolean) => void
-}
+  setIsInfoModalOpen: (value: boolean) => void;
+  setIsStatsModalOpen: (value: boolean) => void;
+  setIsDatePickerModalOpen: (value: boolean) => void;
+  setIsSettingsModalOpen: (value: boolean) => void;
+};
 
 export const Navbar = ({
   setIsInfoModalOpen,
@@ -50,5 +50,5 @@ export const Navbar = ({
       </div>
       <hr></hr>
     </div>
-  )
-}
+  );
+};

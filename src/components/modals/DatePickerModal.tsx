@@ -1,29 +1,29 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline'
-import { addDays, format, startOfDay } from 'date-fns'
-import { useState } from 'react'
-import DatePicker, { registerLocale } from 'react-datepicker'
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
+import { addDays, format, startOfDay } from "date-fns";
+import { useState } from "react";
+import DatePicker, { registerLocale } from "react-datepicker";
 
-import { DATE_LOCALE } from '../../constants/settings'
+import { DATE_LOCALE } from "../../constants/settings";
 import {
   DATEPICKER_CHOOSE_TEXT,
   DATEPICKER_TITLE,
   DATEPICKER_TODAY_TEXT,
-} from '../../constants/strings'
-import { getToday, getYesterday } from '../../lib/dateutils'
+} from "../../constants/strings";
+import { getToday, getYesterday } from "../../lib/dateutils";
 import {
   firstGameDate,
   getLastGameDate,
   isValidGameDate,
   periodInDays,
-} from '../../lib/words'
-import { BaseModal } from './BaseModal'
+} from "../../lib/words";
+import { BaseModal } from "./BaseModal";
 
 type Props = {
-  isOpen: boolean
-  initialDate?: Date
-  handleSelectDate: (date: Date) => void
-  handleClose: () => void
-}
+  isOpen: boolean;
+  initialDate?: Date;
+  handleSelectDate: (date: Date) => void;
+  handleClose: () => void;
+};
 
 export const DatePickerModal = ({
   isOpen,
@@ -31,26 +31,26 @@ export const DatePickerModal = ({
   handleSelectDate,
   handleClose,
 }: Props) => {
-  const lastGameDate = getLastGameDate(getYesterday())
+  const lastGameDate = getLastGameDate(getYesterday());
   const [selectedDate, setSelectedDate] = useState(() => {
     if (initialDate == null || initialDate > lastGameDate) {
-      return lastGameDate
+      return lastGameDate;
     }
-    return initialDate
-  })
+    return initialDate;
+  });
 
-  const headingDateFormat = 'MMMM yyyy'
-  const buttonDateFormat = 'd MMM yyyy'
-  const formatOptions = { locale: DATE_LOCALE }
+  const headingDateFormat = "MMMM yyyy";
+  const buttonDateFormat = "d MMM yyyy";
+  const formatOptions = { locale: DATE_LOCALE };
 
-  registerLocale('locale', DATE_LOCALE)
+  registerLocale("locale", DATE_LOCALE);
 
-  const excludedDates: Date[] = []
+  const excludedDates: Date[] = [];
   if (periodInDays > 1) {
-    let date = firstGameDate
+    let date = firstGameDate;
     for (date = firstGameDate; date < getToday(); date = addDays(date, 1)) {
       if (!isValidGameDate(date)) {
-        excludedDates.push(date)
+        excludedDates.push(date);
       }
     }
   }
@@ -91,7 +91,7 @@ export const DatePickerModal = ({
                   className={`
                             ${
                               prevMonthButtonDisabled &&
-                              'cursor-not-allowed opacity-50'
+                              "cursor-not-allowed opacity-50"
                             }
                             inline-flex rounded border border-gray-300 bg-white p-1 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0
                             dark:border-gray-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:ring-blue-600
@@ -107,7 +107,7 @@ export const DatePickerModal = ({
                   className={`
                             ${
                               nextMonthButtonDisabled &&
-                              'cursor-not-allowed opacity-50'
+                              "cursor-not-allowed opacity-50"
                             }
                             inline-flex rounded border border-gray-300 bg-white p-1 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0
                             dark:border-gray-600 dark:bg-slate-700 dark:text-gray-200 dark:focus:ring-blue-600
@@ -142,5 +142,5 @@ export const DatePickerModal = ({
         </button>
       </div>
     </BaseModal>
-  )
-}
+  );
+};
