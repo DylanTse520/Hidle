@@ -1,10 +1,7 @@
-import "./App.css";
-
 import { ClockIcon } from "@heroicons/react/outline";
 import { format } from "date-fns";
 import { default as GraphemeSplitter } from "grapheme-splitter";
 import { useEffect, useState } from "react";
-import Div100vh from "react-div-100vh";
 
 import { AlertContainer } from "./components/alerts/AlertContainer";
 import { Grid } from "./components/grid/Grid";
@@ -275,7 +272,7 @@ function App() {
   };
 
   return (
-    <Div100vh>
+    <div className="h-screen">
       <div className="flex h-full flex-col">
         <Navbar
           setIsInfoModalOpen={setIsInfoModalOpen}
@@ -365,7 +362,7 @@ function App() {
           <AlertContainer />
         </div>
       </div>
-    </Div100vh>
+    </div>
   );
 }
 
