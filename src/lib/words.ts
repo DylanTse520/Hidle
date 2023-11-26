@@ -1,14 +1,6 @@
-import {
-  addDays,
-  differenceInDays,
-  formatISO,
-  parseISO,
-  startOfDay,
-} from "date-fns";
+import { addDays, differenceInDays, formatISO, startOfDay } from "date-fns";
 import { default as GraphemeSplitter } from "grapheme-splitter";
-import queryString from "query-string";
 
-import { ENABLE_ARCHIVED_GAMES } from "../constants/settings";
 import {
   NOT_CONTAINED_MESSAGE,
   WRONG_SPOT_MESSAGE,
@@ -102,14 +94,6 @@ export const getNextGameDate = (today: Date) => {
   return addDays(getLastGameDate(today), periodInDays);
 };
 
-export const isValidGameDate = (date: Date) => {
-  if (date < firstGameDate || date > getToday()) {
-    return false;
-  }
-
-  return differenceInDays(firstGameDate, date) % periodInDays === 0;
-};
-
 export const getIndex = (gameDate: Date) => {
   let start = firstGameDate;
   let index = -1;
@@ -141,24 +125,6 @@ export const getSolution = (gameDate: Date) => {
   };
 };
 
-export const getGameDate = () => {
-  if (getIsLatestGame()) {
-    return getToday();
-  }
-
-  const parsed = queryString.parse(window.location.search);
-  try {
-    const d = startOfDay(parseISO(parsed.d!.toString()));
-    if (d >= getToday() || d < firstGameDate) {
-      setGameDate(getToday());
-    }
-    return d;
-  } catch (e) {
-    console.log(e);
-    return getToday();
-  }
-};
-
 export const setGameDate = (d: Date) => {
   try {
     if (d < getToday()) {
@@ -171,13 +137,5 @@ export const setGameDate = (d: Date) => {
   window.location.href = "/";
 };
 
-export const getIsLatestGame = () => {
-  if (!ENABLE_ARCHIVED_GAMES) {
-    return true;
-  }
-  const parsed = queryString.parse(window.location.search);
-  return parsed === null || !("d" in parsed);
-};
-
 export const { solution, solutionGameDate, solutionIndex, tomorrow } =
-  getSolution(getGameDate());
+  getSolution(getToday());

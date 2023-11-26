@@ -85,7 +85,6 @@ Note that guesses are validated against both the length of the solution, and pre
 - If the language has letters that are not present in English update the keyboard in [src/components/keyboard/Keyboard.tsx](src/components/keyboard/Keyboard.tsx)
 - If the language is written right-to-left, prepend `\u202E` (the unicode right-to-left override character) to the return statement of the inner function in `generateEmojiGrid` in
   [src/lib/share.ts](src/lib/share.ts)
-- To enable replaying past days' games, set `ENABLE_ARCHIVED_GAMES` to `true`
 - Set `DATE_LOCALE` to a suitable locale string as defined in [date-fns](https://github.com/date-fns/date-fns/tree/main/src/locale).
 
 ### How can I add usage tracking?

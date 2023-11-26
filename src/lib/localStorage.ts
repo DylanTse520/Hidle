@@ -1,5 +1,4 @@
 const gameStateKey = "gameState";
-const archiveGameStateKey = "archiveGameState";
 const highContrastKey = "highContrast";
 
 export type StoredGameState = {
@@ -7,16 +6,13 @@ export type StoredGameState = {
   solution: string;
 };
 
-export const saveGameStateToLocalStorage = (
-  isLatestGame: boolean,
-  gameState: StoredGameState
-) => {
-  const key = isLatestGame ? gameStateKey : archiveGameStateKey;
+export const saveGameStateToLocalStorage = (gameState: StoredGameState) => {
+  const key = gameStateKey;
   localStorage.setItem(key, JSON.stringify(gameState));
 };
 
-export const loadGameStateFromLocalStorage = (isLatestGame: boolean) => {
-  const key = isLatestGame ? gameStateKey : archiveGameStateKey;
+export const loadGameStateFromLocalStorage = () => {
+  const key = gameStateKey;
   const state = localStorage.getItem(key);
   return state ? (JSON.parse(state) as StoredGameState) : null;
 };
