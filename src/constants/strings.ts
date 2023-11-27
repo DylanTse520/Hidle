@@ -7,7 +7,6 @@ export const HIGH_CONTRAST_MODE_DESCRIPTION = "For improved color vision";
 export const CORRECT_WORD_MESSAGE = (solution: string) =>
   `The word was ${solution}`;
 export const ENTER_TEXT = "Enter";
-export const DELETE_TEXT = "Delete";
 export const STATISTICS_TITLE = "Statistics";
 export const GUESS_DISTRIBUTION_TEXT = "Guess Distribution";
 export const SHARE_TEXT = "Share";

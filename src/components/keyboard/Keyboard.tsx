@@ -1,5 +1,7 @@
+import { BackspaceIcon as BackspaceOutline } from "@heroicons/react/24/outline";
+import { BackspaceIcon as BackspaceSolid } from "@heroicons/react/24/solid";
 import { useContext, useEffect } from "react";
-import { DELETE_TEXT, ENTER_TEXT } from "src/constants/strings";
+import { ENTER_TEXT } from "src/constants/strings";
 import { SolutionContext } from "src/context/SolutionContext";
 import { getStatuses } from "src/utils/statuses";
 import { localeAwareUpperCase } from "src/utils/words";
@@ -91,7 +93,12 @@ export const Keyboard = ({
           />
         ))}
         <Key width={65.4} value="DELETE" onClick={onClick}>
-          {DELETE_TEXT}
+          <div className="group flex h-full w-full items-center justify-center">
+            <div className="fixed h-6 w-6">
+              <BackspaceSolid className="absolute inset-0 opacity-0 group-hover:opacity-100 dark:text-white" />
+              <BackspaceOutline className="absolute inset-0 opacity-100 group-hover:opacity-0 dark:stroke-white" />
+            </div>
+          </div>
         </Key>
       </div>
     </div>
