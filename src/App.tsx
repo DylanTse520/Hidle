@@ -12,14 +12,14 @@ import { SettingsModal } from "./components/modals/SettingsModal";
 import { StatsModal } from "./components/modals/StatsModal";
 import { Navbar } from "./components/navbar/Navbar";
 import {
-  DISCOURAGE_INAPP_BROWSERS,
+  DISCOURAGE_IN_APP_BROWSERS,
   MAX_CHALLENGES,
   REVEAL_TIME_MS,
   WELCOME_INFO_MODAL_MS,
 } from "./constants/settings";
 import {
   CORRECT_WORD_MESSAGE,
-  DISCOURAGE_INAPP_BROWSER_TEXT,
+  DISCOURAGE_IN_APP_BROWSER_TEXT,
   NOT_ENOUGH_LETTERS_MESSAGE,
   WIN_MESSAGES,
   WORD_NOT_FOUND_MESSAGE,
@@ -106,9 +106,9 @@ function App() {
   });
 
   useEffect(() => {
-    DISCOURAGE_INAPP_BROWSERS &&
+    DISCOURAGE_IN_APP_BROWSERS &&
       isInAppBrowser() &&
-      showErrorAlert(DISCOURAGE_INAPP_BROWSER_TEXT, {
+      showErrorAlert(DISCOURAGE_IN_APP_BROWSER_TEXT, {
         persist: false,
         durationMs: 7000,
       });
