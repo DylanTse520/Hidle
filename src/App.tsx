@@ -22,7 +22,6 @@ import {
   DISCOURAGE_IN_APP_BROWSER_TEXT,
   NOT_ENOUGH_LETTERS_MESSAGE,
   WIN_MESSAGES,
-  WORD_NOT_FOUND_MESSAGE,
 } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
 import { SolutionContext } from "./context/SolutionContext";
@@ -34,7 +33,7 @@ import {
   setStoredIsHighContrastMode,
 } from "./utils/localStorage";
 import { addStatsForCompletedGame, loadStats } from "./utils/stats";
-import { getSolution, isWordInWordList, unicodeLength } from "./utils/words";
+import { getSolution, unicodeLength } from "./utils/words";
 
 function App() {
   const { code } = useParams();
