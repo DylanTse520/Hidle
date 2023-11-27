@@ -47,7 +47,7 @@ function App() {
     } else {
       setSolution(getSolution(code));
     }
-  });
+  }, [code, navigate, setSolution]);
 
   const isLatestGame = true;
   const prefersDarkMode = window.matchMedia(

@@ -93,8 +93,8 @@ export const Keyboard = ({
           />
         ))}
         <Key width={65.4} value="DELETE" onClick={onClick}>
-          <div className="group flex h-full w-full items-center justify-center">
-            <div className="fixed h-6 w-6">
+          <div className="group relative flex h-full w-full items-center justify-center">
+            <div className="absolute h-6 w-6">
               <BackspaceSolid className="absolute inset-0 opacity-0 group-hover:opacity-100 dark:text-white" />
               <BackspaceOutline className="absolute inset-0 opacity-100 group-hover:opacity-0 dark:stroke-white" />
             </div>
