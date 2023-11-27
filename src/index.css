@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 :root {
   --animation-speed: 1000ms;
@@ -53,12 +53,16 @@
   animation-fill-mode: backwards;
 }
 
-svg.cursor-pointer {
-  transition: all var(--animation-speed-fast);
+.icon-group {
+  @apply relative h-6 w-6 cursor-pointer;
 }
 
-svg.cursor-pointer:hover {
-  transform: scale(1.2);
+.icon-group > .icon-solid {
+  @apply absolute inset-0 opacity-0 transition-opacity duration-200 ease-in-out dark:text-white;
+}
+
+.icon-group > .icon-outline {
+  @apply absolute inset-0 opacity-100 transition-opacity duration-200 ease-in-out dark:stroke-white;
 }
 
 .jiggle {
@@ -75,10 +79,6 @@ svg.cursor-pointer:hover {
   height: 3rem;
   align-items: center;
   justify-content: space-between;
-}
-
-.right-icons {
-  display: flex;
 }
 
 @keyframes revealAbsentCharCell {
@@ -209,11 +209,11 @@ svg.cursor-pointer:hover {
 }
 
 .react-datepicker-right {
-  @apply absolute right-0 left-auto top-11 transform-none !important;
+  @apply absolute left-auto right-0 top-11 transform-none !important;
 }
 
 .react-datepicker__portal {
-  @apply absolute top-12 right-0 z-10 w-72 transform-none rounded border-2 border-gray-200 bg-white px-3 py-2 text-sm shadow;
+  @apply absolute right-0 top-12 z-10 w-72 transform-none rounded border-2 border-gray-200 bg-white px-3 py-2 text-sm shadow;
 }
 
 .react-datepicker__month-container {

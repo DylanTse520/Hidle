@@ -1,13 +1,18 @@
-import { solution, unicodeSplit } from "src/utils/words";
+import { useContext } from "react";
+import { SolutionContext } from "src/context/SolutionContext";
+import { unicodeSplit } from "src/utils/words";
 
 import { Cell } from "./Cell";
 
-type Props = {
+export const CurrentRow = ({
+  guess,
+  className,
+}: {
   guess: string;
   className: string;
-};
+}) => {
+  const { solution } = useContext(SolutionContext);
 
-export const CurrentRow = ({ guess, className }: Props) => {
   const splitGuess = unicodeSplit(guess);
   const emptyCells = Array.from(Array(solution.length - splitGuess.length));
   const classes = `flex justify-center mb-1 ${className}`;

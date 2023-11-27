@@ -6,15 +6,10 @@ export const WORD_NOT_FOUND_MESSAGE = "Word not found";
 export const HIGH_CONTRAST_MODE_DESCRIPTION = "For improved color vision";
 export const CORRECT_WORD_MESSAGE = (solution: string) =>
   `The word was ${solution}`;
-export const WRONG_SPOT_MESSAGE = (guess: string, position: number) =>
-  `Must use ${guess} in position ${position}`;
-export const NOT_CONTAINED_MESSAGE = (letter: string) =>
-  `Guess must contain ${letter}`;
 export const ENTER_TEXT = "Enter";
 export const DELETE_TEXT = "Delete";
 export const STATISTICS_TITLE = "Statistics";
 export const GUESS_DISTRIBUTION_TEXT = "Guess Distribution";
-export const NEW_WORD_TEXT = "New word in";
 export const SHARE_TEXT = "Share";
 export const MIGRATE_BUTTON_TEXT = "Transfer";
 export const MIGRATE_DESCRIPTION_TEXT =

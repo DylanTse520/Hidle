@@ -1,6 +1,7 @@
 import { default as GraphemeSplitter } from "grapheme-splitter";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Div100vh from "react-div-100vh";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AlertContainer } from "./components/alerts/AlertContainer";
 import { Grid } from "./components/grid/Grid";
@@ -24,6 +25,7 @@ import {
   WORD_NOT_FOUND_MESSAGE,
 } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
+import { SolutionContext } from "./context/SolutionContext";
 import { isInAppBrowser } from "./utils/browser";
 import {
   getStoredIsHighContrastMode,
@@ -32,14 +34,21 @@ import {
   setStoredIsHighContrastMode,
 } from "./utils/localStorage";
 import { addStatsForCompletedGame, loadStats } from "./utils/stats";
-import {
-  isWinningWord,
-  isWordInWordList,
-  solution,
-  unicodeLength,
-} from "./utils/words";
+import { getSolution, isWordInWordList, unicodeLength } from "./utils/words";
 
 function App() {
+  const { code } = useParams();
+  const navigate = useNavigate();
+  const { solution, setSolution } = useContext(SolutionContext);
+
+  useEffect(() => {
+    if (!code) {
+      navigate("/welcome"); // todo: randomly choose a word
+    } else {
+      setSolution(getSolution(code));
+    }
+  });
+
   const isLatestGame = true;
   const prefersDarkMode = window.matchMedia(
     "(prefers-color-scheme: dark)"
@@ -59,8 +68,8 @@ function App() {
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
       : prefersDarkMode
-      ? true
-      : false
+        ? true
+        : false
   );
   const [isHighContrastMode, setIsHighContrastMode] = useState(
     getStoredIsHighContrastMode()
@@ -187,21 +196,18 @@ function App() {
       });
     }
 
-    if (!isWordInWordList(currentGuess)) {
-      setCurrentRowClass("jiggle");
-      return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
-        onClose: clearCurrentRowClass,
-      });
-    }
+    // todo: in word mode, check if word is in word list
+    // if (!isWordInWordList(currentGuess)) {
+    //   setCurrentRowClass("jiggle");
+    //   return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
+    //     onClose: clearCurrentRowClass,
+    //   });
+    // }
 
     setIsRevealing(true);
-    // turn this back off after all
-    // chars have been revealed
     setTimeout(() => {
       setIsRevealing(false);
     }, REVEAL_TIME_MS * solution.length);
-
-    const winningWord = isWinningWord(currentGuess);
 
     if (
       unicodeLength(currentGuess) === solution.length &&
@@ -211,7 +217,7 @@ function App() {
       setGuesses([...guesses, currentGuess]);
       setCurrentGuess("");
 
-      if (winningWord) {
+      if (solution === currentGuess) {
         if (isLatestGame) {
           setStats(addStatsForCompletedGame(stats, guesses.length));
         }
@@ -239,8 +245,7 @@ function App() {
           setIsStatsModalOpen={setIsStatsModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
         />
-
-        <div className="mx-auto flex w-full grow flex-col px-1 pt-2 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
+        <div className="mx-auto flex w-full grow flex-col px-1 pb-8 pt-2 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
           <div className="flex grow flex-col justify-center pb-6 short:pb-2">
             <Grid
               solution={solution}
@@ -254,7 +259,6 @@ function App() {
             onChar={onChar}
             onDelete={onDelete}
             onEnter={onEnter}
-            solution={solution}
             guesses={guesses}
             isRevealing={isRevealing}
           />

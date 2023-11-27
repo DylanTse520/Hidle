@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { MAX_CHALLENGES } from "src/constants/settings";
 
 import { CompletedRow } from "./CompletedRow";
@@ -25,7 +26,7 @@ export const Grid = ({
       : [];
 
   return (
-    <>
+    <Fragment>
       {guesses.map((guess, i) => (
         <CompletedRow
           key={i}
@@ -40,6 +41,6 @@ export const Grid = ({
       {empties.map((_, i) => (
         <EmptyRow key={i} />
       ))}
-    </>
+    </Fragment>
   );
 };

@@ -1,8 +1,10 @@
-import { solution } from "src/utils/words";
+import { useContext } from "react";
+import { SolutionContext } from "src/context/SolutionContext";
 
 import { Cell } from "./Cell";
 
 export const EmptyRow = () => {
+  const { solution } = useContext(SolutionContext);
   const emptyCells = Array.from(Array(solution.length));
 
   return (

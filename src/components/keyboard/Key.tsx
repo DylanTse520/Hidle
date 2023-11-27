@@ -1,18 +1,9 @@
 import classnames from "classnames";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
+import { SolutionContext } from "src/context/SolutionContext";
 import { getStoredIsHighContrastMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
-import { solution } from "src/utils/words";
-
-type Props = {
-  children?: ReactNode;
-  value: string;
-  width?: number;
-  status?: CharStatus;
-  onClick: (value: string) => void;
-  isRevealing?: boolean;
-};
 
 export const Key = ({
   children,
@@ -21,7 +12,16 @@ export const Key = ({
   value,
   onClick,
   isRevealing,
-}: Props) => {
+}: {
+  children?: ReactNode;
+  value: string;
+  width?: number;
+  status?: CharStatus;
+  onClick: (value: string) => void;
+  isRevealing?: boolean;
+}) => {
+  const { solution } = useContext(SolutionContext);
+
   const keyDelayMs = REVEAL_TIME_MS * solution.length;
   const isHighContrast = getStoredIsHighContrastMode();
 
@@ -58,6 +58,7 @@ export const Key = ({
       style={styles}
       aria-label={`${value}${status ? " " + status : ""}`}
       className={classes}
+      tabIndex={1}
       onClick={handleClick}
     >
       {children || value}

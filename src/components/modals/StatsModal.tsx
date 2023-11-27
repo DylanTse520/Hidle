@@ -1,14 +1,11 @@
-import { ShareIcon } from "@heroicons/react/outline";
-import Countdown from "react-countdown";
+import { ShareIcon } from "@heroicons/react/24/outline";
 import { ENABLE_MIGRATE_STATS } from "src/constants/settings";
 import {
   GUESS_DISTRIBUTION_TEXT,
-  NEW_WORD_TEXT,
   SHARE_TEXT,
   STATISTICS_TITLE,
 } from "src/constants/strings";
 import { GameStats } from "src/utils/localStorage";
-import { tomorrow } from "src/utils/words";
 
 import { Histogram } from "../stats/Histogram";
 import { MigrationIntro } from "../stats/MigrationIntro";
@@ -66,18 +63,6 @@ export const StatsModal = ({
       />
       {(isGameLost || isGameWon) && (
         <div className="mt-5 columns-2 items-center items-stretch justify-center text-center dark:text-white sm:mt-6">
-          <div className="inline-block w-full text-left">
-            {
-              <div>
-                <h5>{NEW_WORD_TEXT}</h5>
-                <Countdown
-                  className="text-lg font-medium text-gray-900 dark:text-gray-100"
-                  date={tomorrow}
-                  daysInHours={true}
-                />
-              </div>
-            }
-          </div>
           <div>
             <button
               type="button"
@@ -94,7 +79,7 @@ export const StatsModal = ({
       )}
       {ENABLE_MIGRATE_STATS && (
         <div>
-          <hr className="mt-4 -mb-4 border-gray-500" />
+          <hr className="-mb-4 mt-4 border-gray-500" />
           <MigrationIntro handleMigrateStatsButton={handleMigrateStatsButton} />
         </div>
       )}

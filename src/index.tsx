@@ -2,15 +2,24 @@ import "./index.css";
 
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import App from "./App";
 import { AlertProvider } from "./context/AlertContext";
+import { SolutionProvider } from "./context/SolutionContext";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
     <AlertProvider>
-      <App />
+      <SolutionProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/:code" element={<App />} />
+            <Route path="/" element={<App />} />
+          </Routes>
+        </BrowserRouter>
+      </SolutionProvider>
     </AlertProvider>
   </React.StrictMode>,
   document.getElementById("root")
