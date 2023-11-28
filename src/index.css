@@ -70,15 +70,12 @@
   animation-duration: var(--animation-speed-fast);
 }
 
-.navbar {
-  margin-bottom: 2%;
-}
-
-.navbar-content {
-  display: flex;
-  height: 3rem;
-  align-items: center;
-  justify-content: space-between;
+.content-height {
+  height: calc(100vh - 4rem - 1px);
+  @media (max-height: 650px) {
+    height: calc(100vh - 3rem - 1px);
+  }
+  min-height: 408px;
 }
 
 @keyframes revealAbsentCharCell {

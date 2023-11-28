@@ -20,8 +20,8 @@ export const Navbar = ({
   setIsSettingsModalOpen: (value: boolean) => void;
 }) => {
   return (
-    <div className="navbar">
-      <div className="navbar-content px-5 short:h-auto">
+    <div className="pb-4">
+      <div className="flex-center flex h-12 items-center justify-between px-5 short:h-8">
         <p className="text-xl font-bold dark:text-white">{GAME_TITLE}</p>
         <div className="flex gap-3">
           <div

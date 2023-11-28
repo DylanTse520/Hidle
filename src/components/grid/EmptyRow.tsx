@@ -8,7 +8,7 @@ export const EmptyRow = () => {
   const emptyCells = Array.from(Array(solution.length));
 
   return (
-    <div className="mb-1 flex justify-center">
+    <div className="flex justify-center gap-1">
       {emptyCells.map((_, i) => (
         <Cell key={i} />
       ))}

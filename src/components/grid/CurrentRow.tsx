@@ -15,7 +15,7 @@ export const CurrentRow = ({
 
   const splitGuess = unicodeSplit(guess);
   const emptyCells = Array.from(Array(solution.length - splitGuess.length));
-  const classes = `flex justify-center mb-1 ${className}`;
+  const classes = `flex justify-center gap-1 ${className}`;
 
   return (
     <div className={classes}>

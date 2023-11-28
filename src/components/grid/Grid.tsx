@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { MAX_CHALLENGES } from "src/constants/settings";
 
 import { CompletedRow } from "./CompletedRow";
@@ -26,21 +25,23 @@ export const Grid = ({
       : [];
 
   return (
-    <Fragment>
-      {guesses.map((guess, i) => (
-        <CompletedRow
-          key={i}
-          solution={solution}
-          guess={guess}
-          isRevealing={isRevealing && guesses.length - 1 === i}
-        />
-      ))}
-      {guesses.length < MAX_CHALLENGES && (
-        <CurrentRow guess={currentGuess} className={currentRowClassName} />
-      )}
-      {empties.map((_, i) => (
-        <EmptyRow key={i} />
-      ))}
-    </Fragment>
+    <div className="mb-6 flex grow flex-col overflow-auto short:mb-2">
+      <div className="flex grow flex-col justify-center gap-1">
+        {guesses.map((guess, i) => (
+          <CompletedRow
+            key={i}
+            solution={solution}
+            guess={guess}
+            isRevealing={isRevealing && guesses.length - 1 === i}
+          />
+        ))}
+        {guesses.length < MAX_CHALLENGES && (
+          <CurrentRow guess={currentGuess} className={currentRowClassName} />
+        )}
+        {empties.map((_, i) => (
+          <EmptyRow key={i} />
+        ))}
+      </div>
+    </div>
   );
 };

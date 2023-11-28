@@ -42,7 +42,7 @@ function App() {
 
   useEffect(() => {
     if (!code) {
-      navigate("/welcome"); // todo: randomly choose a word
+      navigate("/WELCOME"); // todo: randomly choose a word
     } else {
       setSolution(getSolution(code));
     }
@@ -242,16 +242,14 @@ function App() {
           setIsStatsModalOpen={setIsStatsModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
         />
-        <div className="mx-auto flex w-full grow flex-col px-1 pb-8 pt-2 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2 short:pt-2">
-          <div className="flex grow flex-col justify-center pb-6 short:pb-2">
-            <Grid
-              solution={solution}
-              guesses={guesses}
-              currentGuess={currentGuess}
-              isRevealing={isRevealing}
-              currentRowClassName={currentRowClass}
-            />
-          </div>
+        <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2">
+          <Grid
+            solution={solution}
+            guesses={guesses}
+            currentGuess={currentGuess}
+            isRevealing={isRevealing}
+            currentRowClassName={currentRowClass}
+          />
           <Keyboard
             onChar={onChar}
             onDelete={onDelete}
