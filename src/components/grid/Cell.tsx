@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import { useEffect, useRef } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
 import { getStoredIsHighContrastMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
@@ -23,6 +24,14 @@ export const Cell = ({
   const animationDelay = `${position * REVEAL_TIME_MS}ms`;
   const isHighContrast = getStoredIsHighContrastMode();
 
+  const cellRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isFilled && cellRef.current) {
+      cellRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isFilled]);
+
   const classes = classnames(
     "cell-width xshort:w-11 xshort:h-11 short:text-2xl short:w-12 short:h-12 w-14 h-14 border-solid border-2 flex items-center justify-center text-4xl font-bold rounded dark:text-white",
     {
@@ -45,7 +54,7 @@ export const Cell = ({
   );
 
   return (
-    <div className={classes} style={{ animationDelay }}>
+    <div ref={cellRef} className={classes} style={{ animationDelay }}>
       <div className="letter-container" style={{ animationDelay }}>
         {value}
       </div>
