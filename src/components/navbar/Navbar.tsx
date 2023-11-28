@@ -12,11 +12,9 @@ import { GAME_TITLE } from "src/constants/strings";
 
 export const Navbar = ({
   setIsInfoModalOpen,
-  setIsStatsModalOpen,
   setIsSettingsModalOpen,
 }: {
   setIsInfoModalOpen: (value: boolean) => void;
-  setIsStatsModalOpen: (value: boolean) => void;
   setIsSettingsModalOpen: (value: boolean) => void;
 }) => {
   return (
@@ -37,7 +35,7 @@ export const Navbar = ({
           <div
             className="icon-group group"
             tabIndex={0}
-            onClick={() => setIsStatsModalOpen(true)}
+            onClick={() => null}
             role="button"
             aria-label="View game statistics"
           >

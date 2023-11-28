@@ -4,6 +4,7 @@ import { Cell } from "./Cell";
 
 export const EmptyRow = () => {
   const { solution } = useSolution();
+
   const emptyCells = Array.from(Array(solution.length));
 
   return (

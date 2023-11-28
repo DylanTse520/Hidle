@@ -1,15 +1,18 @@
+import { useSolution } from "src/context/SolutionContext";
 import { getGuessStatuses } from "src/utils/statuses";
 import { unicodeSplit } from "src/utils/words";
 
 import { Cell } from "./Cell";
 
-type Props = {
-  solution: string;
+export const CompletedRow = ({
+  guess,
+  isRevealing,
+}: {
   guess: string;
   isRevealing?: boolean;
-};
+}) => {
+  const { solution } = useSolution();
 
-export const CompletedRow = ({ solution, guess, isRevealing }: Props) => {
   const statuses = getGuessStatuses(solution, guess);
   const splitGuess = unicodeSplit(guess);
 

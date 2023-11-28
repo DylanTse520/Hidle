@@ -7,36 +7,21 @@ import { AlertContainer } from "./components/alerts/AlertContainer";
 import { Grid } from "./components/grid/Grid";
 import { Keyboard } from "./components/keyboard/Keyboard";
 import { InfoModal } from "./components/modals/InfoModal";
-import { MigrateStatsModal } from "./components/modals/MigrateStatsModal";
 import { SettingsModal } from "./components/modals/SettingsModal";
-import { StatsModal } from "./components/modals/StatsModal";
 import { Navbar } from "./components/navbar/Navbar";
-import {
-  DISCOURAGE_IN_APP_BROWSERS,
-  MAX_CHALLENGES,
-  REVEAL_TIME_MS,
-  WELCOME_INFO_MODAL_MS,
-} from "./constants/settings";
-import {
-  CORRECT_WORD_MESSAGE,
-  DISCOURAGE_IN_APP_BROWSER_TEXT,
-  NOT_ENOUGH_LETTERS_MESSAGE,
-  WIN_MESSAGES,
-} from "./constants/strings";
+import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
+import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
 import { useSolution } from "./context/SolutionContext";
-import { isInAppBrowser } from "./utils/browser";
 import {
   getStoredIsHighContrastMode,
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
   setStoredIsHighContrastMode,
 } from "./utils/localStorage";
-import { addStatsForCompletedGame, loadStats } from "./utils/stats";
 import { getSolution, unicodeLength } from "./utils/words";
 
 function App() {
-  const isLatestGame = true;
   const prefersDarkMode = window.matchMedia(
     "(prefers-color-scheme: dark)"
   ).matches;
@@ -50,10 +35,7 @@ function App() {
   const [currentGuess, setCurrentGuess] = useState("");
   const [currentRowClass, setCurrentRowClass] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
-  const [isGameLost, setIsGameLost] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
-  const [isMigrateStatsModalOpen, setIsMigrateStatsModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
@@ -73,15 +55,8 @@ function App() {
     if (gameWasWon) {
       setIsGameWon(true);
     }
-    if (loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
-      setIsGameLost(true);
-      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-        persist: true,
-      });
-    }
     return loaded.guesses;
   });
-  const [stats, setStats] = useState(() => loadStats());
 
   useEffect(() => {
     if (!code) {
@@ -92,23 +67,13 @@ function App() {
   }, [code, navigate, setSolution]);
 
   useEffect(() => {
-    // if no game state on load,
-    // show the user the how-to info modal
+    // if no game state is loaded, show welcome modal
     if (!loadGameStateFromLocalStorage()) {
       setTimeout(() => {
         setIsInfoModalOpen(true);
       }, WELCOME_INFO_MODAL_MS);
     }
   });
-
-  useEffect(() => {
-    DISCOURAGE_IN_APP_BROWSERS &&
-      isInAppBrowser() &&
-      showErrorAlert(DISCOURAGE_IN_APP_BROWSER_TEXT, {
-        persist: false,
-        durationMs: 7000,
-      });
-  }, [showErrorAlert]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -126,9 +91,10 @@ function App() {
 
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution });
-  }, [guesses]);
+  }, [guesses, solution]);
 
   useEffect(() => {
+    // if game is won, show success alert
     if (isGameWon) {
       const winMessage =
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
@@ -136,19 +102,9 @@ function App() {
 
       showSuccessAlert(winMessage, {
         delayMs,
-        onClose: () => setIsStatsModalOpen(true),
       });
     }
-
-    if (isGameLost) {
-      setTimeout(
-        () => {
-          setIsStatsModalOpen(true);
-        },
-        (solution.length + 1) * REVEAL_TIME_MS
-      );
-    }
-  }, [isGameWon, isGameLost, showSuccessAlert]);
+  }, [isGameWon, showSuccessAlert, solution]);
 
   const handleDarkMode = (isDark: boolean) => {
     setIsDarkMode(isDark);
@@ -160,14 +116,9 @@ function App() {
     setStoredIsHighContrastMode(isHighContrast);
   };
 
-  const clearCurrentRowClass = () => {
-    setCurrentRowClass("");
-  };
-
   const onChar = (value: string) => {
     if (
       unicodeLength(`${currentGuess}${value}`) <= solution.length &&
-      guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
       setCurrentGuess(`${currentGuess}${value}`);
@@ -181,55 +132,45 @@ function App() {
   };
 
   const onEnter = () => {
-    if (isGameWon || isGameLost) {
+    // if game is already won, do nothing
+    if (isGameWon) {
       return;
     }
 
+    // if not enough letters, show error
     if (!(unicodeLength(currentGuess) === solution.length)) {
       setCurrentRowClass("jiggle");
       return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
-        onClose: clearCurrentRowClass,
+        onClose: () => {
+          setCurrentRowClass("");
+        },
       });
     }
 
     // todo: in word mode, check if word is in word list
+    // if guess is not a word, show error
     // if (!isWordInWordList(currentGuess)) {
     //   setCurrentRowClass("jiggle");
     //   return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
-    //     onClose: clearCurrentRowClass,
+    //     onClose: () => {
+    //       setCurrentRowClass("");
+    //     },
     //   });
     // }
 
+    // play reveal animation
     setIsRevealing(true);
     setTimeout(() => {
       setIsRevealing(false);
     }, REVEAL_TIME_MS * solution.length);
 
-    if (
-      unicodeLength(currentGuess) === solution.length &&
-      guesses.length < MAX_CHALLENGES &&
-      !isGameWon
-    ) {
-      setGuesses([...guesses, currentGuess]);
-      setCurrentGuess("");
+    // add guess to guesses
+    setGuesses([...guesses, currentGuess]);
+    setCurrentGuess("");
 
-      if (solution === currentGuess) {
-        if (isLatestGame) {
-          setStats(addStatsForCompletedGame(stats, guesses.length));
-        }
-        return setIsGameWon(true);
-      }
-
-      if (guesses.length === MAX_CHALLENGES - 1) {
-        if (isLatestGame) {
-          setStats(addStatsForCompletedGame(stats, guesses.length + 1));
-        }
-        setIsGameLost(true);
-        showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-          persist: true,
-          delayMs: REVEAL_TIME_MS * solution.length + 1,
-        });
-      }
+    // if guess is correct, set game won
+    if (solution === currentGuess) {
+      return setIsGameWon(true);
     }
   };
 
@@ -238,7 +179,6 @@ function App() {
       <div className="flex h-full flex-col dark:bg-slate-900">
         <Navbar
           setIsInfoModalOpen={setIsInfoModalOpen}
-          setIsStatsModalOpen={setIsStatsModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
         />
         <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2">
@@ -259,23 +199,6 @@ function App() {
           <InfoModal
             isOpen={isInfoModalOpen}
             handleClose={() => setIsInfoModalOpen(false)}
-          />
-          <StatsModal
-            isOpen={isStatsModalOpen}
-            handleClose={() => setIsStatsModalOpen(false)}
-            gameStats={stats}
-            isLatestGame={isLatestGame}
-            isGameLost={isGameLost}
-            isGameWon={isGameWon}
-            handleMigrateStatsButton={() => {
-              setIsStatsModalOpen(false);
-              setIsMigrateStatsModalOpen(true);
-            }}
-            numberOfGuessesMade={guesses.length}
-          />
-          <MigrateStatsModal
-            isOpen={isMigrateStatsModalOpen}
-            handleClose={() => setIsMigrateStatsModalOpen(false)}
           />
           <SettingsModal
             isOpen={isSettingsModalOpen}

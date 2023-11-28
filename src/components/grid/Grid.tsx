@@ -1,5 +1,3 @@
-import { MAX_CHALLENGES } from "src/constants/settings";
-
 import { CompletedRow } from "./CompletedRow";
 import { CurrentRow } from "./CurrentRow";
 import { EmptyRow } from "./EmptyRow";
@@ -19,10 +17,7 @@ export const Grid = ({
   isRevealing,
   currentRowClassName,
 }: Props) => {
-  const empties =
-    guesses.length < MAX_CHALLENGES - 1
-      ? Array.from(Array(MAX_CHALLENGES - 1 - guesses.length))
-      : [];
+  const emptyRows = new Array(Math.max(5 - guesses.length, 0)).fill(0);
 
   return (
     <div className="mb-6 flex grow flex-col overflow-auto short:mb-2">
@@ -30,15 +25,12 @@ export const Grid = ({
         {guesses.map((guess, i) => (
           <CompletedRow
             key={i}
-            solution={solution}
             guess={guess}
             isRevealing={isRevealing && guesses.length - 1 === i}
           />
         ))}
-        {guesses.length < MAX_CHALLENGES && (
-          <CurrentRow guess={currentGuess} className={currentRowClassName} />
-        )}
-        {empties.map((_, i) => (
+        <CurrentRow guess={currentGuess} className={currentRowClassName} />
+        {emptyRows.map((_, i) => (
           <EmptyRow key={i} />
         ))}
       </div>
