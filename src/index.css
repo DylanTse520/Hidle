@@ -78,6 +78,16 @@
   min-height: 408px;
 }
 
+.cell-width {
+  min-width: 3.5rem;
+  @media (max-height: 650px) {
+    min-width: 3rem;
+  }
+  @media (max-height: 560px) {
+    min-width: 2.75rem;
+  }
+}
+
 @keyframes revealAbsentCharCell {
   0% {
     transform: rotateX(0deg);

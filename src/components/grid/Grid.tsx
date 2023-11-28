@@ -20,7 +20,7 @@ export const Grid = ({
   const emptyRows = new Array(Math.max(5 - guesses.length, 0)).fill(0);
 
   return (
-    <div className="mb-6 flex grow flex-col overflow-auto short:mb-2">
+    <div className="mb-6 flex grow overflow-auto short:mb-2">
       <div className="flex grow flex-col justify-center gap-1">
         {guesses.map((guess, i) => (
           <CompletedRow
