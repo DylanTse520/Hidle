@@ -22,16 +22,13 @@ import {
 import { getSolution, unicodeLength } from "./utils/words";
 
 function App() {
-  const prefersDarkMode = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
-
   const { code } = useParams();
   const navigate = useNavigate();
-  const { solution, setSolution } = useSolution();
 
+  const { solution, setSolution } = useSolution();
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert();
+
   const [currentGuess, setCurrentGuess] = useState("");
   const [currentRowClass, setCurrentRowClass] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
@@ -40,7 +37,7 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
-      : prefersDarkMode
+      : window.matchMedia("(prefers-color-scheme: dark)").matches
   );
   const [isHighContrastMode, setIsHighContrastMode] = useState(
     getStoredIsHighContrastMode()
@@ -119,7 +116,8 @@ function App() {
   const onChar = (value: string) => {
     if (
       unicodeLength(`${currentGuess}${value}`) <= solution.length &&
-      !isGameWon
+      !isGameWon &&
+      !isRevealing
     ) {
       setCurrentGuess(`${currentGuess}${value}`);
     }
@@ -132,8 +130,8 @@ function App() {
   };
 
   const onEnter = () => {
-    // if game is already won, do nothing
-    if (isGameWon) {
+    // if game is already won or is revealing answer, do nothing
+    if (isGameWon || isRevealing) {
       return;
     }
 
@@ -181,7 +179,7 @@ function App() {
           setIsInfoModalOpen={setIsInfoModalOpen}
           setIsSettingsModalOpen={setIsSettingsModalOpen}
         />
-        <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 md:max-w-7xl lg:px-8 short:pb-2">
+        <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 lg:px-8 short:pb-2">
           <Grid
             solution={solution}
             guesses={guesses}
