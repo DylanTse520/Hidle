@@ -1,5 +1,5 @@
 import { default as GraphemeSplitter } from "grapheme-splitter";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -24,7 +24,7 @@ import {
   WIN_MESSAGES,
 } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
-import { SolutionContext } from "./context/SolutionContext";
+import { useSolution } from "./context/SolutionContext";
 import { isInAppBrowser } from "./utils/browser";
 import {
   getStoredIsHighContrastMode,
@@ -36,22 +36,14 @@ import { addStatsForCompletedGame, loadStats } from "./utils/stats";
 import { getSolution, unicodeLength } from "./utils/words";
 
 function App() {
-  const { code } = useParams();
-  const navigate = useNavigate();
-  const { solution, setSolution } = useContext(SolutionContext);
-
-  useEffect(() => {
-    if (!code) {
-      navigate("/WELCOME"); // todo: randomly choose a word
-    } else {
-      setSolution(getSolution(code));
-    }
-  }, [code, navigate, setSolution]);
-
   const isLatestGame = true;
   const prefersDarkMode = window.matchMedia(
     "(prefers-color-scheme: dark)"
   ).matches;
+
+  const { code } = useParams();
+  const navigate = useNavigate();
+  const { solution, setSolution } = useSolution();
 
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert();
@@ -89,8 +81,15 @@ function App() {
     }
     return loaded.guesses;
   });
-
   const [stats, setStats] = useState(() => loadStats());
+
+  useEffect(() => {
+    if (!code) {
+      navigate("/WELCOME"); // todo: randomly choose a word
+    } else {
+      setSolution(getSolution(code));
+    }
+  }, [code, navigate, setSolution]);
 
   useEffect(() => {
     // if no game state on load,
@@ -125,20 +124,6 @@ function App() {
     }
   }, [isDarkMode, isHighContrastMode]);
 
-  const handleDarkMode = (isDark: boolean) => {
-    setIsDarkMode(isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  };
-
-  const handleHighContrastMode = (isHighContrast: boolean) => {
-    setIsHighContrastMode(isHighContrast);
-    setStoredIsHighContrastMode(isHighContrast);
-  };
-
-  const clearCurrentRowClass = () => {
-    setCurrentRowClass("");
-  };
-
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution });
   }, [guesses]);
@@ -164,6 +149,20 @@ function App() {
       );
     }
   }, [isGameWon, isGameLost, showSuccessAlert]);
+
+  const handleDarkMode = (isDark: boolean) => {
+    setIsDarkMode(isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  };
+
+  const handleHighContrastMode = (isHighContrast: boolean) => {
+    setIsHighContrastMode(isHighContrast);
+    setStoredIsHighContrastMode(isHighContrast);
+  };
+
+  const clearCurrentRowClass = () => {
+    setCurrentRowClass("");
+  };
 
   const onChar = (value: string) => {
     if (

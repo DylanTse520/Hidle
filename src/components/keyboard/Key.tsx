@@ -1,7 +1,7 @@
 import classnames from "classnames";
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
-import { SolutionContext } from "src/context/SolutionContext";
+import { useSolution } from "src/context/SolutionContext";
 import { getStoredIsHighContrastMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
 
@@ -20,7 +20,7 @@ export const Key = ({
   onClick: (value: string) => void;
   isRevealing?: boolean;
 }) => {
-  const { solution } = useContext(SolutionContext);
+  const { solution } = useSolution();
 
   const keyDelayMs = REVEAL_TIME_MS * solution.length;
   const isHighContrast = getStoredIsHighContrastMode();

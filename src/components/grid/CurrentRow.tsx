@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { SolutionContext } from "src/context/SolutionContext";
+import { useSolution } from "src/context/SolutionContext";
 import { unicodeSplit } from "src/utils/words";
 
 import { Cell } from "./Cell";
@@ -11,7 +10,7 @@ export const CurrentRow = ({
   guess: string;
   className: string;
 }) => {
-  const { solution } = useContext(SolutionContext);
+  const { solution } = useSolution();
 
   const splitGuess = unicodeSplit(guess);
   const emptyCells = Array.from(Array(solution.length - splitGuess.length));

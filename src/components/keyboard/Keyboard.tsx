@@ -1,8 +1,8 @@
 import { BackspaceIcon as BackspaceOutline } from "@heroicons/react/24/outline";
 import { BackspaceIcon as BackspaceSolid } from "@heroicons/react/24/solid";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { ENTER_TEXT } from "src/constants/strings";
-import { SolutionContext } from "src/context/SolutionContext";
+import { useSolution } from "src/context/SolutionContext";
 import { getStatuses } from "src/utils/statuses";
 import { localeAwareUpperCase } from "src/utils/words";
 
@@ -21,7 +21,7 @@ export const Keyboard = ({
   guesses: string[];
   isRevealing?: boolean;
 }) => {
-  const { solution } = useContext(SolutionContext);
+  const { solution } = useSolution();
 
   const charStatuses = getStatuses(solution, guesses);
 
