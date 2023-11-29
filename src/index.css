@@ -57,12 +57,12 @@
   @apply relative h-6 w-6 cursor-pointer;
 }
 
-.icon-group > .icon-solid {
-  @apply absolute inset-0 opacity-0 transition-opacity duration-200 ease-in-out dark:text-white;
+.icon-solid {
+  @apply absolute inset-0 transition-opacity duration-200 ease-in-out dark:text-white;
 }
 
-.icon-group > .icon-outline {
-  @apply absolute inset-0 opacity-100 transition-opacity duration-200 ease-in-out dark:stroke-white;
+.icon-outline {
+  @apply absolute inset-0 transition-opacity duration-200 ease-in-out dark:stroke-white;
 }
 
 .jiggle {

@@ -7,7 +7,6 @@ import { AlertContainer } from "./components/alerts/AlertContainer";
 import { Grid } from "./components/grid/Grid";
 import { Keyboard } from "./components/keyboard/Keyboard";
 import { InfoModal } from "./components/modals/InfoModal";
-import { SettingsModal } from "./components/modals/SettingsModal";
 import { Navbar } from "./components/navbar/Navbar";
 import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
 import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
@@ -35,7 +34,6 @@ function App() {
   const [currentRowClass, setCurrentRowClass] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
@@ -180,8 +178,8 @@ function App() {
     <Div100vh>
       <div className="flex h-full flex-col dark:bg-slate-900">
         <Navbar
+          isInfoModalOpen={isInfoModalOpen}
           setIsInfoModalOpen={setIsInfoModalOpen}
-          setIsSettingsModalOpen={setIsSettingsModalOpen}
         />
         <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 lg:px-8 short:pb-2">
           <Grid
@@ -201,10 +199,6 @@ function App() {
           <InfoModal
             isOpen={isInfoModalOpen}
             handleClose={() => setIsInfoModalOpen(false)}
-          />
-          <SettingsModal
-            isOpen={isSettingsModalOpen}
-            handleClose={() => setIsSettingsModalOpen(false)}
             isDarkMode={isDarkMode}
             handleDarkMode={handleDarkMode}
             isAccessibilityMode={isAccessibilityMode}

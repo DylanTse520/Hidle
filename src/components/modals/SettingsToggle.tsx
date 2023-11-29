@@ -8,28 +8,24 @@ type Props = {
 
 export const SettingsToggle = ({ settingName, flag, handleFlag }: Props) => {
   const toggleHolder = classnames(
-    "w-14 h-8 flex shrink-0 items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out cursor-pointer",
+    "w-12 h-7 flex shrink-0 items-center bg-gray-300 rounded-full p-1 duration-300 ease-in-out cursor-pointer",
     {
       "bg-green-400": flag,
     }
   );
   const toggleButton = classnames(
-    "bg-white w-6 h-6 rounded-full shadow-md transform duration-300 ease-in-out cursor-pointer",
+    "bg-white w-5 h-5 rounded-full shadow-md transform duration-300 ease-in-out cursor-pointer",
     {
-      "translate-x-6": flag,
+      "translate-x-5": flag,
     }
   );
 
   return (
-    <>
-      <div className="flex justify-between gap-4 py-3">
-        <div className="mt-2 text-left text-gray-500 dark:text-gray-300">
-          <p className="leading-none">{settingName}</p>
-        </div>
-        <div className={toggleHolder} onClick={() => handleFlag(!flag)}>
-          <div className={toggleButton} />
-        </div>
+    <div className="mt-2 flex items-center justify-between gap-1">
+      <div className="text-gray-600 dark:text-gray-300">{settingName}</div>
+      <div className={toggleHolder} onClick={() => handleFlag(!flag)}>
+        <div className={toggleButton} />
       </div>
-    </>
+    </div>
   );
 };
