@@ -1,13 +1,9 @@
 import { default as GraphemeSplitter } from "grapheme-splitter";
 
 import { VALID_GUESSES } from "../constants/validGuesses";
-import { WORDS } from "../constants/wordlist";
 
 export const isWordInWordList = (word: string) => {
-  return (
-    WORDS.includes(localeAwareLowerCase(word)) ||
-    VALID_GUESSES.includes(localeAwareLowerCase(word))
-  );
+  return VALID_GUESSES.includes(localeAwareLowerCase(word));
 };
 
 export const unicodeSplit = (word: string) => {
