@@ -40,7 +40,8 @@ export const Grid = ({
             // if game is not won, show one current row
             !isGameWon && (
               <CurrentRow
-                guess={currentGuess}
+                currentGuess={currentGuess}
+                numberOfTotalGuesses={guesses.length}
                 className={currentRowClassName}
               />
             )

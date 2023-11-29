@@ -4,21 +4,19 @@ import { REVEAL_TIME_MS } from "src/constants/settings";
 import { getStoredIsHighContrastMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
 
-type Props = {
-  value?: string;
-  status?: CharStatus;
-  isRevealing?: boolean;
-  isCompleted?: boolean;
-  position?: number;
-};
-
 export const Cell = ({
   value,
   status,
   isRevealing,
   isCompleted,
   position = 0,
-}: Props) => {
+}: {
+  value?: string;
+  status?: CharStatus;
+  isRevealing?: boolean;
+  isCompleted?: boolean;
+  position?: number;
+}) => {
   const isFilled = value && !isCompleted;
   const shouldReveal = isRevealing && isCompleted;
   const animationDelay = `${position * REVEAL_TIME_MS}ms`;
@@ -27,13 +25,19 @@ export const Cell = ({
   const cellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isFilled && cellRef.current) {
-      cellRef.current.scrollIntoView({ behavior: "smooth" });
+    // scroll into view when revealing
+    if (shouldReveal && cellRef.current) {
+      setTimeout(
+        () => {
+          cellRef.current!.scrollIntoView();
+        },
+        (position - 1) * REVEAL_TIME_MS
+      );
     }
-  }, [isFilled]);
+  }, [position, shouldReveal]);
 
   const classes = classnames(
-    "cell-width xshort:w-11 xshort:h-11 short:text-2xl short:w-12 short:h-12 w-14 h-14 border-solid border-2 flex items-center justify-center text-4xl font-bold rounded dark:text-white",
+    "cell-width mx-0.5 xshort:w-11 xshort:h-11 short:text-2xl short:w-12 short:h-12 w-14 h-14 border-solid border-2 flex items-center justify-center text-4xl font-bold rounded dark:text-white",
     {
       "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-600":
         !status,

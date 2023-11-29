@@ -17,7 +17,7 @@ export const CompletedRow = ({
   const splitGuess = unicodeSplit(guess);
 
   return (
-    <div className="flex justify-center gap-1">
+    <div className="flex justify-center">
       {splitGuess.map((letter, i) => (
         <Cell
           key={i}
