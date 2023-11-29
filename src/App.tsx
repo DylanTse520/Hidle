@@ -22,6 +22,8 @@ import {
 import { getSolution, unicodeLength } from "./utils/words";
 
 function App() {
+  const metaThemeColor = document.querySelector("meta[name='theme-color']");
+
   const { code } = useParams();
   const navigate = useNavigate();
 
@@ -75,8 +77,10 @@ function App() {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
+      metaThemeColor?.setAttribute("content", "#0F172A"); // Set to your dark theme color
     } else {
       document.documentElement.classList.remove("dark");
+      metaThemeColor?.setAttribute("content", "#FFFFFF"); // Set to your dark theme color
     }
 
     if (isHighContrastMode) {
