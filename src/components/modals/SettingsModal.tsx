@@ -1,5 +1,3 @@
-import { HIGH_CONTRAST_MODE_DESCRIPTION } from "src/constants/strings";
-
 import { BaseModal } from "./BaseModal";
 import { SettingsToggle } from "./SettingsToggle";
 
@@ -8,15 +6,15 @@ export const SettingsModal = ({
   handleClose,
   isDarkMode,
   handleDarkMode,
-  isHighContrastMode,
-  handleHighContrastMode,
+  isAccessibilityMode,
+  handleAccessibilityMode,
 }: {
   isOpen: boolean;
   handleClose: () => void;
   isDarkMode: boolean;
   handleDarkMode: Function;
-  isHighContrastMode: boolean;
-  handleHighContrastMode: Function;
+  isAccessibilityMode: boolean;
+  handleAccessibilityMode: Function;
 }) => {
   return (
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
@@ -27,10 +25,9 @@ export const SettingsModal = ({
           handleFlag={handleDarkMode}
         />
         <SettingsToggle
-          settingName="High Contrast Mode"
-          flag={isHighContrastMode}
-          handleFlag={handleHighContrastMode}
-          description={HIGH_CONTRAST_MODE_DESCRIPTION}
+          settingName="Visual Accessibility Mode"
+          flag={isAccessibilityMode}
+          handleFlag={handleAccessibilityMode}
         />
       </div>
     </BaseModal>

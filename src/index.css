@@ -20,7 +20,7 @@
   --absent-cell-bg-color: theme("colors.slate.700");
 }
 
-.high-contrast {
+.accessibility {
   --correct-cell-bg-color: theme("colors.cyan.400");
   --present-cell-bg-color: theme("colors.orange.400");
 }

@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { useEffect, useRef } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
-import { getStoredIsHighContrastMode } from "src/utils/localStorage";
+import { getStoredIsAccessibilityMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
 
 export const Cell = ({
@@ -20,7 +20,7 @@ export const Cell = ({
   const isFilled = value && !isCompleted;
   const shouldReveal = isRevealing && isCompleted;
   const animationDelay = `${position * REVEAL_TIME_MS}ms`;
-  const isHighContrast = getStoredIsHighContrastMode();
+  const isAccessibility = getStoredIsAccessibilityMode();
 
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -45,13 +45,13 @@ export const Cell = ({
       "absent shadowed bg-slate-400 dark:bg-slate-700 text-white border-slate-400 dark:border-slate-700":
         status === "absent",
       "correct shadowed bg-cyan-500 text-white underline decoration-solid border-cyan-500":
-        status === "correct" && isHighContrast,
+        status === "correct" && isAccessibility,
       "present shadowed bg-orange-500 text-white border-orange-500":
-        status === "present" && isHighContrast,
+        status === "present" && isAccessibility,
       "correct shadowed bg-green-500 text-white border-green-500":
-        status === "correct" && !isHighContrast,
+        status === "correct" && !isAccessibility,
       "present shadowed bg-amber-500 text-white border-amber-500":
-        status === "present" && !isHighContrast,
+        status === "present" && !isAccessibility,
       "cell-fill-animation": isFilled,
       "cell-reveal": shouldReveal,
     }

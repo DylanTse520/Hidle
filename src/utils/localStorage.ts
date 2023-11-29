@@ -1,5 +1,5 @@
 const gameStateKey = "gameState";
-const highContrastKey = "highContrast";
+const accessibilityKey = "accessibility";
 
 export type StoredGameState = {
   guesses: string[];
@@ -17,15 +17,15 @@ export const loadGameStateFromLocalStorage = () => {
   return state ? (JSON.parse(state) as StoredGameState) : null;
 };
 
-export const setStoredIsHighContrastMode = (isHighContrast: boolean) => {
-  if (isHighContrast) {
-    localStorage.setItem(highContrastKey, "true");
+export const setStoredIsAccessibilityMode = (isAccessibility: boolean) => {
+  if (isAccessibility) {
+    localStorage.setItem(accessibilityKey, "true");
   } else {
-    localStorage.removeItem(highContrastKey);
+    localStorage.removeItem(accessibilityKey);
   }
 };
 
-export const getStoredIsHighContrastMode = () => {
-  const highContrast = localStorage.getItem(highContrastKey);
-  return highContrast === "true";
+export const getStoredIsAccessibilityMode = () => {
+  const accessibility = localStorage.getItem(accessibilityKey);
+  return accessibility === "true";
 };
