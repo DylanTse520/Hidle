@@ -18,6 +18,7 @@ beforeEach(() => {
       dispatchEvent: jest.fn(),
     })),
   });
+  window.HTMLElement.prototype.scrollIntoView = jest.fn();
 });
 
 test("renders App component", () => {
