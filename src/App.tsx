@@ -181,10 +181,10 @@ function App() {
         />
         <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 lg:px-8 short:pb-2">
           <Grid
-            solution={solution}
             guesses={guesses}
             currentGuess={currentGuess}
             isRevealing={isRevealing}
+            isGameWon={isGameWon}
             currentRowClassName={currentRowClass}
           />
           <Keyboard
