@@ -26,18 +26,25 @@ export const Grid = ({
     <div className="mb-6 flex grow flex-col overflow-auto short:mb-2">
       <div className="flex grow">
         <div className="flex grow flex-col justify-center gap-1">
-          {/* all guesses are mapped to completed rows */}
-          {guesses.map((guess, i) => (
-            <CompletedRow
-              key={i}
-              guess={guess}
-              isRevealing={isRevealing && guesses.length - 1 === i}
-            />
-          ))}
-          {/* if game is not won, show one current row */}
-          {!isGameWon && (
-            <CurrentRow guess={currentGuess} className={currentRowClassName} />
-          )}
+          {
+            // all guesses are mapped to completed rows
+            guesses.map((guess, i) => (
+              <CompletedRow
+                key={i}
+                guess={guess}
+                isRevealing={isRevealing && guesses.length - 1 === i}
+              />
+            ))
+          }
+          {
+            // if game is not won, show one current row
+            !isGameWon && (
+              <CurrentRow
+                guess={currentGuess}
+                className={currentRowClassName}
+              />
+            )
+          }
           {emptyRows.map((_, i) => (
             <EmptyRow key={i} />
           ))}
