@@ -12,7 +12,7 @@ import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
 import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
 import { useSolution } from "./context/SolutionContext";
-import { encrypt } from "./utils/encryption";
+import { decode, encode } from "./utils/encoding";
 import {
   getStoredIsAccessibilityMode,
   loadGameStateFromLocalStorage,
@@ -58,13 +58,19 @@ function App() {
 
   useEffect(() => {
     if (!code) {
-      navigate("/WELCOME"); // todo: randomly choose a word
+      navigate("/WELCOME");
     } else {
       setSolution(getSolution(code));
       console.log("🚀 ~ file: App.tsx:63 ~ useEffect ~ solution:", solution);
+      const encodedSolution = encode(solution);
       console.log(
-        "🚀 ~ file: App.tsx:63 ~ useEffect ~ encrypt(solution):",
-        encrypt(solution)
+        "🚀 ~ file: App.tsx:63 ~ useEffect ~ encodedSolution:",
+        encodedSolution
+      );
+      const decodedSolution = decode(encodedSolution);
+      console.log(
+        "🚀 ~ file: App.tsx:71 ~ useEffect ~ decodedSolution:",
+        decodedSolution
       );
     }
   }, [code, navigate, setSolution, solution]);
@@ -153,7 +159,6 @@ function App() {
       });
     }
 
-    // todo: in word mode, check if word is in word list
     // if guess is not a word, show error
     // if (!isWordInWordList(currentGuess)) {
     //   setCurrentRowClass("jiggle");
