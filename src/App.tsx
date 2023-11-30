@@ -12,14 +12,13 @@ import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
 import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
 import { useSolution } from "./context/SolutionContext";
-import { decode, encode } from "./utils/encoding";
 import {
   getStoredIsAccessibilityMode,
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
   setStoredIsAccessibilityMode,
 } from "./utils/localStorage";
-import { getSolution, unicodeLength } from "./utils/words";
+import { decode, encode, unicodeLength } from "./utils/words";
 
 function App() {
   const metaThemeColor = document.querySelector("meta[name='theme-color']");
@@ -58,20 +57,9 @@ function App() {
 
   useEffect(() => {
     if (!code) {
-      navigate("/WELCOME");
+      navigate("/" + encode("WELCOME"));
     } else {
-      setSolution(getSolution(code));
-      console.log("🚀 ~ file: App.tsx:63 ~ useEffect ~ solution:", solution);
-      const encodedSolution = encode(solution);
-      console.log(
-        "🚀 ~ file: App.tsx:63 ~ useEffect ~ encodedSolution:",
-        encodedSolution
-      );
-      const decodedSolution = decode(encodedSolution);
-      console.log(
-        "🚀 ~ file: App.tsx:71 ~ useEffect ~ decodedSolution:",
-        decodedSolution
-      );
+      setSolution(decode(code));
     }
   }, [code, navigate, setSolution, solution]);
 
