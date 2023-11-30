@@ -12,6 +12,7 @@ import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
 import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
 import { useSolution } from "./context/SolutionContext";
+import { encrypt } from "./utils/encryption";
 import {
   getStoredIsAccessibilityMode,
   loadGameStateFromLocalStorage,
@@ -60,8 +61,13 @@ function App() {
       navigate("/WELCOME"); // todo: randomly choose a word
     } else {
       setSolution(getSolution(code));
+      console.log("🚀 ~ file: App.tsx:63 ~ useEffect ~ solution:", solution);
+      console.log(
+        "🚀 ~ file: App.tsx:63 ~ useEffect ~ encrypt(solution):",
+        encrypt(solution)
+      );
     }
-  }, [code, navigate, setSolution]);
+  }, [code, navigate, setSolution, solution]);
 
   useEffect(() => {
     // if no game state is loaded, show welcome modal
@@ -75,10 +81,10 @@ function App() {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
-      metaThemeColor?.setAttribute("content", "#0F172A"); // Set to your dark theme color
+      metaThemeColor?.setAttribute("content", "#0F172A");
     } else {
       document.documentElement.classList.remove("dark");
-      metaThemeColor?.setAttribute("content", "#FFFFFF"); // Set to your dark theme color
+      metaThemeColor?.setAttribute("content", "#FFFFFF");
     }
 
     if (isAccessibilityMode) {
