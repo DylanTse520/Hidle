@@ -18,8 +18,8 @@ export const Alert = ({
   const classes = classNames(
     "fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden",
     {
-      "bg-rose-500 text-white": variant === "error",
-      "bg-blue-500 text-white": variant === "success",
+      "bg-rose-600 text-white": variant === "error",
+      "bg-indigo-600 text-white": variant === "success",
     }
   );
 
@@ -35,7 +35,7 @@ export const Alert = ({
       leaveTo="opacity-0"
     >
       <div className={classes}>
-        <div className="p-2">
+        <div className="px-4 py-2">
           <p className="text-center text-sm font-medium">{message}</p>
         </div>
       </div>

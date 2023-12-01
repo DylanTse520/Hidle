@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": ["Hidle", "tailwindcss"],
+  "cSpell.words": ["Hidle", "tailwindcss", "wordle"],
   "css.customData": [".vscode/tailwind.json"]
 }

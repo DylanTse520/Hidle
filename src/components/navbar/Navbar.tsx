@@ -6,6 +6,7 @@ import {
   InformationCircleIcon as InformationSolid,
   PlusCircleIcon as PlusSolid,
 } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 
 export const Navbar = ({
   isInfoModalOpen,
@@ -21,11 +22,22 @@ export const Navbar = ({
   return (
     <div className="pb-4">
       <div className="flex-center flex h-12 items-center justify-between px-5 short:h-8">
-        <h1 className="text-xl font-bold dark:text-white">Hidle</h1>
+        <Link
+          to="/"
+          className="text-xl font-bold leading-5 focus-visible:rounded
+          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4
+          focus-visible:outline-indigo-600 dark:text-white dark:focus-visible:outline-indigo-400"
+          role="heading"
+          aria-level={1}
+          title="Guess a random new message"
+          tabIndex={0}
+        >
+          Hidle
+        </Link>
         <div className="flex gap-3">
           <div
             className="icon-group group"
-            tabIndex={0}
+            tabIndex={2}
             onClick={() => setIsInfoModalOpen(true)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -33,7 +45,8 @@ export const Navbar = ({
               }
             }}
             role="button"
-            aria-label="Show how to play the game and visual settings"
+            aria-label="Open modal for how to play and visual settings"
+            title="How to play instructions and visual settings"
           >
             <InformationSolid
               className={`icon-solid group-hover:opacity-100${
@@ -48,7 +61,7 @@ export const Navbar = ({
           </div>
           <div
             className="icon-group group"
-            tabIndex={0}
+            tabIndex={2}
             onClick={() => setIsShareModalOpen(true)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -56,7 +69,8 @@ export const Navbar = ({
               }
             }}
             role="button"
-            aria-label="Create a new message and share it"
+            aria-label="Open modal to hide new message to share"
+            title="Hide a new message to share"
           >
             <PlusSolid
               className={`icon-solid group-hover:opacity-100${

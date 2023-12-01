@@ -30,7 +30,7 @@ function App() {
   const metaThemeColor = document.querySelector("meta[name='theme-color']");
 
   const WIN_MESSAGES = useMemo(
-    () => ["Great Job!", "Awesome", "Well done!"],
+    () => ["You got it!", "Great job!", "Well done!"],
     []
   );
 

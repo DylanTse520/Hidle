@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAlert } from "src/context/AlertContext";
 import { copyTextToClipboard } from "src/utils/clipboard";
 import { encode, localeAwareUpperCase } from "src/utils/words";
 
@@ -15,9 +16,11 @@ export const ShareModal = ({
   const [message, setMessage] = useState<string>();
   const [code, setCode] = useState<string>();
 
+  const { showSuccess } = useAlert();
+
   return (
     <BaseModal
-      title="Create a new game"
+      title="Create new game"
       isOpen={isOpen}
       handleClose={handleClose}
     >
@@ -46,6 +49,7 @@ export const ShareModal = ({
           buttonDisabled={!code}
           onClick={() => {
             copyTextToClipboard(window.location.origin + "/" + code);
+            showSuccess("Copied to clipboard!");
           }}
         />
       </div>
@@ -60,6 +64,7 @@ export const ShareModal = ({
         buttonText={"Copy"}
         onClick={() => {
           copyTextToClipboard(window.location.href);
+          showSuccess("Copied to clipboard!");
         }}
       />
     </BaseModal>
