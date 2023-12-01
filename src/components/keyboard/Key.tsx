@@ -53,18 +53,15 @@ export const Key = ({
     width: `${width}px`,
   };
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
-    onClick(value);
-    event.currentTarget.blur();
-  };
-
   return (
     <button
       style={styles}
       aria-label={`${value}${status ? " " + status : ""}`}
       className={classes}
       tabIndex={1}
-      onClick={handleClick}
+      onClick={() => {
+        onClick(value);
+      }}
     >
       {children || value}
     </button>

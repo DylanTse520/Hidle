@@ -36,12 +36,13 @@ export const Keyboard = ({
 
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
-      // if some element is focused, don't listen to keyboard events
-      if (document.activeElement !== document.body) {
-        return;
+      if (e.code === "Escape") {
+        (document.activeElement as HTMLElement).blur();
       }
       if (e.code === "Enter") {
-        onEnter();
+        if (document.activeElement === document.body) {
+          onEnter();
+        }
       } else if (e.code === "Backspace") {
         onDelete();
       } else {

@@ -34,6 +34,7 @@ export const SettingsToggle = ({
           className="invisible"
           checked={flag}
           onClick={() => handleFlag(!flag)}
+          onChange={() => {}}
         />
       </label>
       <div
