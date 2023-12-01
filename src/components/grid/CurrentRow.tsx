@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
-import { useSolution } from "src/context/SolutionContext";
+import { useMessage } from "src/context/MessageContext";
 import { unicodeSplit } from "src/utils/words";
 
 import { Cell } from "./Cell";
@@ -14,12 +14,12 @@ export const CurrentRow = ({
   numberOfTotalGuesses: number;
   className: string;
 }) => {
-  const { solution } = useSolution();
+  const { message } = useMessage();
 
   const currentCellRef = useRef<HTMLDivElement>(null);
 
   const splitGuess = unicodeSplit(currentGuess);
-  const emptyCells = new Array(solution.length - splitGuess.length).fill(0);
+  const emptyCells = new Array(message.length - splitGuess.length).fill(0);
 
   useEffect(() => {
     // scroll into view when revealing
@@ -30,13 +30,13 @@ export const CurrentRow = ({
 
   const classes = classNames("invisible", {
     "current-cell-box-big":
-      splitGuess.length < solution.length && numberOfTotalGuesses < 5,
+      splitGuess.length < message.length && numberOfTotalGuesses < 5,
     "current-cell-box-slim":
-      splitGuess.length === solution.length && numberOfTotalGuesses < 5,
+      splitGuess.length === message.length && numberOfTotalGuesses < 5,
     "current-cell-box-short":
-      splitGuess.length < solution.length && numberOfTotalGuesses >= 5,
+      splitGuess.length < message.length && numberOfTotalGuesses >= 5,
     "current-cell-box-small":
-      splitGuess.length === solution.length && numberOfTotalGuesses >= 5,
+      splitGuess.length === message.length && numberOfTotalGuesses >= 5,
   });
 
   return (

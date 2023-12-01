@@ -1,4 +1,4 @@
-import { useSolution } from "src/context/SolutionContext";
+import { useMessage } from "src/context/MessageContext";
 import { getGuessStatuses } from "src/utils/statuses";
 import { unicodeSplit } from "src/utils/words";
 
@@ -11,9 +11,9 @@ export const CompletedRow = ({
   guess: string;
   isRevealing?: boolean;
 }) => {
-  const { solution } = useSolution();
+  const { message } = useMessage();
 
-  const statuses = getGuessStatuses(solution, guess);
+  const statuses = getGuessStatuses(message, guess);
   const splitGuess = unicodeSplit(guess);
 
   return (

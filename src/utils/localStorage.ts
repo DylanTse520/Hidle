@@ -3,7 +3,7 @@ const accessibilityKey = "accessibility";
 
 export type StoredGameState = {
   guesses: string[];
-  solution: string;
+  message: string;
 };
 
 export const saveGameStateToLocalStorage = (gameState: StoredGameState) => {

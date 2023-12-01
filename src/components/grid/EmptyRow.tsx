@@ -1,11 +1,11 @@
-import { useSolution } from "src/context/SolutionContext";
+import { useMessage } from "src/context/MessageContext";
 
 import { Cell } from "./Cell";
 
 export const EmptyRow = () => {
-  const { solution } = useSolution();
+  const { message } = useMessage();
 
-  const emptyCells = Array.from(Array(solution.length));
+  const emptyCells = Array.from(Array(message.length));
 
   return (
     <div className="flex justify-center">

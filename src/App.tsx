@@ -11,7 +11,7 @@ import { Navbar } from "./components/navbar/Navbar";
 import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
 import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
-import { useSolution } from "./context/SolutionContext";
+import { useMessage } from "./context/MessageContext";
 import {
   getStoredIsAccessibilityMode,
   loadGameStateFromLocalStorage,
@@ -26,7 +26,7 @@ function App() {
   const { code } = useParams();
   const navigate = useNavigate();
 
-  const { solution, setSolution } = useSolution();
+  const { message, setMessage } = useMessage();
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert();
 
@@ -45,10 +45,10 @@ function App() {
   const [isRevealing, setIsRevealing] = useState(false);
   const [guesses, setGuesses] = useState<string[]>(() => {
     const loaded = loadGameStateFromLocalStorage();
-    if (loaded?.solution !== solution) {
+    if (loaded?.message !== message) {
       return [];
     }
-    const gameWasWon = loaded.guesses.includes(solution);
+    const gameWasWon = loaded.guesses.includes(message);
     if (gameWasWon) {
       setIsGameWon(true);
     }
@@ -59,9 +59,9 @@ function App() {
     if (!code) {
       navigate("/" + encode("WELCOME"));
     } else {
-      setSolution(decode(code));
+      setMessage(decode(code));
     }
-  }, [code, navigate, setSolution, solution]);
+  }, [code, navigate, setMessage]);
 
   useEffect(() => {
     // if no game state is loaded, show welcome modal
@@ -89,21 +89,21 @@ function App() {
   }, [isDarkMode, isAccessibilityMode, metaThemeColor]);
 
   useEffect(() => {
-    saveGameStateToLocalStorage({ guesses, solution });
-  }, [guesses, solution]);
+    saveGameStateToLocalStorage({ guesses, message: message });
+  }, [guesses, message]);
 
   useEffect(() => {
     // if game is won, show success alert
     if (isGameWon) {
       const winMessage =
         WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
-      const delayMs = REVEAL_TIME_MS * solution.length;
+      const delayMs = REVEAL_TIME_MS * message.length;
 
       showSuccessAlert(winMessage, {
         delayMs,
       });
     }
-  }, [isGameWon, showSuccessAlert, solution]);
+  }, [isGameWon, showSuccessAlert, message]);
 
   const handleDarkMode = (isDark: boolean) => {
     setIsDarkMode(isDark);
@@ -117,7 +117,7 @@ function App() {
 
   const onChar = (value: string) => {
     if (
-      unicodeLength(`${currentGuess}${value}`) <= solution.length &&
+      unicodeLength(`${currentGuess}${value}`) <= message.length &&
       !isGameWon &&
       !isRevealing
     ) {
@@ -138,7 +138,7 @@ function App() {
     }
 
     // if not enough letters, show error
-    if (!(unicodeLength(currentGuess) === solution.length)) {
+    if (!(unicodeLength(currentGuess) === message.length)) {
       setCurrentRowClass("jiggle");
       return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
         onClose: () => {
@@ -161,14 +161,14 @@ function App() {
     setIsRevealing(true);
     setTimeout(() => {
       setIsRevealing(false);
-    }, REVEAL_TIME_MS * solution.length);
+    }, REVEAL_TIME_MS * message.length);
 
     // add guess to guesses
     setGuesses([...guesses, currentGuess]);
     setCurrentGuess("");
 
     // if guess is correct, set game won
-    if (solution === currentGuess) {
+    if (message === currentGuess) {
       return setIsGameWon(true);
     }
   };

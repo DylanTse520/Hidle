@@ -26,9 +26,9 @@ export const localeAwareUpperCase = (text: string) => {
     : text.toUpperCase();
 };
 
-export const encode = (solution: string) => {
+export const encode = (message: string) => {
   // shift each character by its index + 1
-  const shifted = solution
+  const shifted = message
     .split("")
     .map((character, index) => {
       // for each character, shift if by index + 1

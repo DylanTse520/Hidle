@@ -2,7 +2,7 @@ import { BackspaceIcon as BackspaceOutline } from "@heroicons/react/24/outline";
 import { BackspaceIcon as BackspaceSolid } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { ENTER_TEXT } from "src/constants/strings";
-import { useSolution } from "src/context/SolutionContext";
+import { useMessage } from "src/context/MessageContext";
 import { getStatuses } from "src/utils/statuses";
 import { localeAwareUpperCase } from "src/utils/words";
 
@@ -21,9 +21,9 @@ export const Keyboard = ({
   guesses: string[];
   isRevealing?: boolean;
 }) => {
-  const { solution } = useSolution();
+  const { message } = useMessage();
 
-  const charStatuses = getStatuses(solution, guesses);
+  const charStatuses = getStatuses(message, guesses);
 
   const onClick = (value: string) => {
     if (value === "ENTER") {

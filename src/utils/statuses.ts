@@ -3,20 +3,20 @@ import { unicodeSplit } from "./words";
 export type CharStatus = "absent" | "present" | "correct";
 
 export const getStatuses = (
-  solution: string,
+  message: string,
   guesses: string[]
 ): { [key: string]: CharStatus } => {
   const charObj: { [key: string]: CharStatus } = {};
-  const splitSolution = unicodeSplit(solution);
+  const splitMessage = unicodeSplit(message);
 
   guesses.forEach((word) => {
     unicodeSplit(word).forEach((letter, i) => {
-      if (!splitSolution.includes(letter)) {
+      if (!splitMessage.includes(letter)) {
         // make status absent
         return (charObj[letter] = "absent");
       }
 
-      if (letter === splitSolution[i]) {
+      if (letter === splitMessage[i]) {
         //make status correct
         return (charObj[letter] = "correct");
       }
@@ -32,21 +32,21 @@ export const getStatuses = (
 };
 
 export const getGuessStatuses = (
-  solution: string,
+  message: string,
   guess: string
 ): CharStatus[] => {
-  const splitSolution = unicodeSplit(solution);
+  const splitMessage = unicodeSplit(message);
   const splitGuess = unicodeSplit(guess);
 
-  const solutionCharsTaken = splitSolution.map((_) => false);
+  const messageCharsTaken = splitMessage.map((_) => false);
 
   const statuses: CharStatus[] = Array.from(Array(guess.length));
 
   // handle all correct cases first
   splitGuess.forEach((letter, i) => {
-    if (letter === splitSolution[i]) {
+    if (letter === splitMessage[i]) {
       statuses[i] = "correct";
-      solutionCharsTaken[i] = true;
+      messageCharsTaken[i] = true;
       return;
     }
   });
@@ -54,20 +54,20 @@ export const getGuessStatuses = (
   splitGuess.forEach((letter, i) => {
     if (statuses[i]) return;
 
-    if (!splitSolution.includes(letter)) {
+    if (!splitMessage.includes(letter)) {
       // handles the absent case
       statuses[i] = "absent";
       return;
     }
 
     // now we are left with "present"s
-    const indexOfPresentChar = splitSolution.findIndex(
-      (x, index) => x === letter && !solutionCharsTaken[index]
+    const indexOfPresentChar = splitMessage.findIndex(
+      (x, index) => x === letter && !messageCharsTaken[index]
     );
 
     if (indexOfPresentChar > -1) {
       statuses[i] = "present";
-      solutionCharsTaken[indexOfPresentChar] = true;
+      messageCharsTaken[indexOfPresentChar] = true;
       return;
     } else {
       statuses[i] = "absent";

@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { ReactNode } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
-import { useSolution } from "src/context/SolutionContext";
+import { useMessage } from "src/context/MessageContext";
 import { getStoredIsAccessibilityMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
 
@@ -20,9 +20,9 @@ export const Key = ({
   onClick: (value: string) => void;
   isRevealing?: boolean;
 }) => {
-  const { solution } = useSolution();
+  const { message } = useMessage();
 
-  const keyDelayMs = REVEAL_TIME_MS * solution.length;
+  const keyDelayMs = REVEAL_TIME_MS * message.length;
   const isAccessibility = getStoredIsAccessibilityMode();
 
   const classes = classnames(
