@@ -12,17 +12,14 @@ export const getStatuses = (
   guesses.forEach((word) => {
     unicodeSplit(word).forEach((letter, i) => {
       if (!splitMessage.includes(letter)) {
-        // make status absent
         return (charObj[letter] = "absent");
       }
 
       if (letter === splitMessage[i]) {
-        //make status correct
         return (charObj[letter] = "correct");
       }
 
       if (charObj[letter] !== "correct") {
-        //make status present
         return (charObj[letter] = "present");
       }
     });

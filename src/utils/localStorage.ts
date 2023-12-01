@@ -1,5 +1,5 @@
 const gameStateKey = "gameState";
-const accessibilityKey = "accessibility";
+const accessibleKey = "accessible";
 
 export type StoredGameState = {
   guesses: string[];
@@ -17,15 +17,15 @@ export const loadGameStateFromLocalStorage = () => {
   return state ? (JSON.parse(state) as StoredGameState) : null;
 };
 
-export const setStoredIsAccessibilityMode = (isAccessibility: boolean) => {
-  if (isAccessibility) {
-    localStorage.setItem(accessibilityKey, "true");
+export const setStoredAccessibleMode = (isAccessibleMode: boolean) => {
+  if (isAccessibleMode) {
+    localStorage.setItem(accessibleKey, "true");
   } else {
-    localStorage.removeItem(accessibilityKey);
+    localStorage.removeItem(accessibleKey);
   }
 };
 
-export const getStoredIsAccessibilityMode = () => {
-  const accessibility = localStorage.getItem(accessibilityKey);
-  return accessibility === "true";
+export const getStoredAccessibleMode = () => {
+  const isAccessibleMode = localStorage.getItem(accessibleKey);
+  return isAccessibleMode === "true";
 };

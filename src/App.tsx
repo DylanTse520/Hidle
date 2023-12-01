@@ -13,10 +13,10 @@ import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
 import { useAlert } from "./context/AlertContext";
 import { useMessage } from "./context/MessageContext";
 import {
-  getStoredIsAccessibilityMode,
+  getStoredAccessibleMode,
   loadGameStateFromLocalStorage,
   saveGameStateToLocalStorage,
-  setStoredIsAccessibilityMode,
+  setStoredAccessibleMode,
 } from "./utils/localStorage";
 import { decode, encode, unicodeLength } from "./utils/words";
 
@@ -39,8 +39,8 @@ function App() {
       ? localStorage.getItem("theme") === "dark"
       : window.matchMedia("(prefers-color-scheme: dark)").matches
   );
-  const [isAccessibilityMode, setIsAccessibilityMode] = useState(
-    getStoredIsAccessibilityMode()
+  const [isAccessibleMode, setAccessibleMode] = useState(
+    getStoredAccessibleMode()
   );
   const [isRevealing, setIsRevealing] = useState(false);
   const [guesses, setGuesses] = useState<string[]>(() => {
@@ -81,12 +81,12 @@ function App() {
       metaThemeColor?.setAttribute("content", "#FFFFFF");
     }
 
-    if (isAccessibilityMode) {
-      document.documentElement.classList.add("accessibility");
+    if (isAccessibleMode) {
+      document.documentElement.classList.add("accessible");
     } else {
-      document.documentElement.classList.remove("accessibility");
+      document.documentElement.classList.remove("accessible");
     }
-  }, [isDarkMode, isAccessibilityMode, metaThemeColor]);
+  }, [isDarkMode, isAccessibleMode, metaThemeColor]);
 
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, message: message });
@@ -110,9 +110,9 @@ function App() {
     localStorage.setItem("theme", isDark ? "dark" : "light");
   };
 
-  const handleAccessibilityMode = (isAccessibility: boolean) => {
-    setIsAccessibilityMode(isAccessibility);
-    setStoredIsAccessibilityMode(isAccessibility);
+  const handleAccessibleMode = (isAccessibleMode: boolean) => {
+    setAccessibleMode(isAccessibleMode);
+    setStoredAccessibleMode(isAccessibleMode);
   };
 
   const onChar = (value: string) => {
@@ -200,8 +200,8 @@ function App() {
             handleClose={() => setIsInfoModalOpen(false)}
             isDarkMode={isDarkMode}
             handleDarkMode={handleDarkMode}
-            isAccessibilityMode={isAccessibilityMode}
-            handleAccessibilityMode={handleAccessibilityMode}
+            isAccessibleMode={isAccessibleMode}
+            handleAccessibleMode={handleAccessibleMode}
           />
           <AlertContainer />
         </div>

@@ -7,15 +7,15 @@ export const InfoModal = ({
   handleClose,
   isDarkMode,
   handleDarkMode,
-  isAccessibilityMode,
-  handleAccessibilityMode,
+  isAccessibleMode,
+  handleAccessibleMode,
 }: {
   isOpen: boolean;
   handleClose: () => void;
   isDarkMode: boolean;
   handleDarkMode: Function;
-  isAccessibilityMode: boolean;
-  handleAccessibilityMode: Function;
+  isAccessibleMode: boolean;
+  handleAccessibleMode: Function;
 }) => {
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
@@ -77,8 +77,8 @@ export const InfoModal = ({
       />
       <SettingsToggle
         settingName="Visual Accessibility Mode"
-        flag={isAccessibilityMode}
-        handleFlag={handleAccessibilityMode}
+        flag={isAccessibleMode}
+        handleFlag={handleAccessibleMode}
       />
     </BaseModal>
   );
