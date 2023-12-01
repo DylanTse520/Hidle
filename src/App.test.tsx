@@ -1,31 +1,27 @@
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import App from "./App";
 
+// Mock the module that contains useParams
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useParams: jest.fn(),
+  useNavigate: jest.fn(),
+}));
+
 beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
+    value: jest.fn().mockImplementation((query) => ({})),
   });
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
 });
 
 test("renders App component", () => {
-  render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
-  );
+  // Mock the useParams hook
+  (useParams as jest.Mock).mockReturnValue({ code: "X0RALT01fRg" });
+
+  render(<App />);
   const linkElement = screen.getByText("Hidle");
   expect(linkElement).toBeInTheDocument();
 });
