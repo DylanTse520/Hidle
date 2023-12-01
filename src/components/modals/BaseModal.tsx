@@ -51,6 +51,11 @@ export const BaseModal = ({ title, children, isOpen, handleClose }: Props) => {
                   className="icon-group group"
                   tabIndex={0}
                   onClick={() => handleClose()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleClose();
+                    }
+                  }}
                 >
                   <XCircleSolid className="icon-solid opacity-0 group-hover:opacity-100" />
                   <XCircleOutline className="icon-outline opacity-100 group-hover:opacity-0" />

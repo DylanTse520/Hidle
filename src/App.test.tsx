@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import App from "./App";
-import { GAME_TITLE } from "./constants/strings";
 
 beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
@@ -27,6 +26,6 @@ test("renders App component", () => {
       <App />
     </MemoryRouter>
   );
-  const linkElement = screen.getByText(GAME_TITLE);
+  const linkElement = screen.getByText("Hidle");
   expect(linkElement).toBeInTheDocument();
 });

@@ -1,7 +1,6 @@
 import { BackspaceIcon as BackspaceOutline } from "@heroicons/react/24/outline";
 import { BackspaceIcon as BackspaceSolid } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
-import { ENTER_TEXT } from "src/constants/strings";
 import { useMessage } from "src/context/MessageContext";
 import { getStatuses } from "src/utils/statuses";
 import { localeAwareUpperCase } from "src/utils/words";
@@ -37,6 +36,10 @@ export const Keyboard = ({
 
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
+      // if some element is focused, don't listen to keyboard events
+      if (document.activeElement !== document.body) {
+        return;
+      }
       if (e.code === "Enter") {
         onEnter();
       } else if (e.code === "Backspace") {
@@ -80,7 +83,7 @@ export const Keyboard = ({
       </div>
       <div className="flex justify-center">
         <Key width={65.4} value="ENTER" onClick={onClick}>
-          {ENTER_TEXT}
+          Enter
         </Key>
         {["Z", "X", "C", "V", "B", "N", "M"].map((key) => (
           <Key

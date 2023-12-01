@@ -54,7 +54,7 @@
 }
 
 .icon-group {
-  @apply relative h-6 w-6 cursor-pointer;
+  @apply relative h-6 w-6 cursor-pointer focus-visible:rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:focus-visible:outline-indigo-400;
 }
 
 .icon-solid {

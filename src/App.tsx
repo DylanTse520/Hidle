@@ -1,5 +1,5 @@
 import { default as GraphemeSplitter } from "grapheme-splitter";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Div100vh from "react-div-100vh";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -7,9 +7,10 @@ import { AlertContainer } from "./components/alerts/AlertContainer";
 import { Grid } from "./components/grid/Grid";
 import { Keyboard } from "./components/keyboard/Keyboard";
 import { InfoModal } from "./components/modals/InfoModal";
+import { ShareModal } from "./components/modals/ShareModal";
 import { Navbar } from "./components/navbar/Navbar";
 import { REVEAL_TIME_MS, WELCOME_INFO_MODAL_MS } from "./constants/settings";
-import { NOT_ENOUGH_LETTERS_MESSAGE, WIN_MESSAGES } from "./constants/strings";
+import { VALID_GUESSES } from "./constants/validGuesses";
 import { useAlert } from "./context/AlertContext";
 import { useMessage } from "./context/MessageContext";
 import {
@@ -18,10 +19,20 @@ import {
   saveGameStateToLocalStorage,
   setStoredAccessibleMode,
 } from "./utils/localStorage";
-import { decode, encode, unicodeLength } from "./utils/words";
+import {
+  decode,
+  encode,
+  localeAwareUpperCase,
+  unicodeLength,
+} from "./utils/words";
 
 function App() {
   const metaThemeColor = document.querySelector("meta[name='theme-color']");
+
+  const WIN_MESSAGES = useMemo(
+    () => ["Great Job!", "Awesome", "Well done!"],
+    []
+  );
 
   const { code } = useParams();
   const navigate = useNavigate();
@@ -34,6 +45,7 @@ function App() {
   const [currentRowClass, setCurrentRowClass] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
@@ -43,36 +55,59 @@ function App() {
     getStoredAccessibleMode()
   );
   const [isRevealing, setIsRevealing] = useState(false);
-  const [guesses, setGuesses] = useState<string[]>(() => {
-    const loaded = loadGameStateFromLocalStorage();
-    if (loaded?.message !== message) {
-      return [];
-    }
-    const gameWasWon = loaded.guesses.includes(message);
-    if (gameWasWon) {
-      setIsGameWon(true);
-    }
-    return loaded.guesses;
-  });
+  const [guesses, setGuesses] = useState<string[]>([]);
 
   useEffect(() => {
     if (!code) {
-      navigate("/" + encode("WELCOME"));
+      // if no code is given, randomly choose a word from the word list
+      // and navigate to that code
+      const randomWord =
+        VALID_GUESSES[Math.floor(Math.random() * VALID_GUESSES.length)];
+      navigate("/" + encode(localeAwareUpperCase(randomWord)));
     } else {
+      // if code is given, set message to decoded code
       setMessage(decode(code));
     }
   }, [code, navigate, setMessage]);
 
   useEffect(() => {
-    // if no game state is loaded, show welcome modal
-    if (!loadGameStateFromLocalStorage()) {
-      setTimeout(() => {
-        setIsInfoModalOpen(true);
-      }, WELCOME_INFO_MODAL_MS);
+    if (code) {
+      // load game state from local storage
+      const loaded = loadGameStateFromLocalStorage();
+      if (!loaded) {
+        // if no game state is found, save game state to local storage
+        saveGameStateToLocalStorage(new Map([[code!, guesses]]));
+        // show welcome info modal
+        setTimeout(() => {
+          setIsInfoModalOpen(true);
+        }, WELCOME_INFO_MODAL_MS);
+      } else {
+        const storedGuesses = loaded.get(code) || [];
+        if (storedGuesses.length < guesses.length) {
+          // if stored game state is shorter, update stored game state
+          loaded.set(code!, guesses);
+          saveGameStateToLocalStorage(loaded);
+        } else if (storedGuesses.length > guesses.length) {
+          // if stored game state is shorter, update guesses
+          setGuesses(loaded.get(code)!);
+        }
+      }
     }
-  });
+  }, [code, guesses]);
 
   useEffect(() => {
+    // after message and guesses are loaded
+    // if message is in guesses, set game won and show success
+    if (message && guesses.includes(message) && !isGameWon) {
+      setIsGameWon(true);
+      showSuccessAlert(
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+      );
+    }
+  }, [WIN_MESSAGES, guesses, isGameWon, message, showSuccessAlert]);
+
+  useEffect(() => {
+    // set dark mode and theme color
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
       metaThemeColor?.setAttribute("content", "#0F172A");
@@ -81,29 +116,13 @@ function App() {
       metaThemeColor?.setAttribute("content", "#FFFFFF");
     }
 
+    // set accessible mode
     if (isAccessibleMode) {
       document.documentElement.classList.add("accessible");
     } else {
       document.documentElement.classList.remove("accessible");
     }
   }, [isDarkMode, isAccessibleMode, metaThemeColor]);
-
-  useEffect(() => {
-    saveGameStateToLocalStorage({ guesses, message: message });
-  }, [guesses, message]);
-
-  useEffect(() => {
-    // if game is won, show success alert
-    if (isGameWon) {
-      const winMessage =
-        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)];
-      const delayMs = REVEAL_TIME_MS * message.length;
-
-      showSuccessAlert(winMessage, {
-        delayMs,
-      });
-    }
-  }, [isGameWon, showSuccessAlert, message]);
 
   const handleDarkMode = (isDark: boolean) => {
     setIsDarkMode(isDark);
@@ -119,7 +138,9 @@ function App() {
     if (
       unicodeLength(`${currentGuess}${value}`) <= message.length &&
       !isGameWon &&
-      !isRevealing
+      !isRevealing &&
+      !isInfoModalOpen &&
+      !isShareModalOpen
     ) {
       setCurrentGuess(`${currentGuess}${value}`);
     }
@@ -133,44 +154,42 @@ function App() {
 
   const onEnter = () => {
     // if game is already won or is revealing answer, do nothing
-    if (isGameWon || isRevealing) {
+    if (isGameWon || isRevealing || isInfoModalOpen || isShareModalOpen) {
       return;
     }
 
     // if not enough letters, show error
     if (!(unicodeLength(currentGuess) === message.length)) {
       setCurrentRowClass("jiggle");
-      return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
+      return showErrorAlert("Not enough letters", {
         onClose: () => {
           setCurrentRowClass("");
         },
       });
     }
 
-    // if guess is not a word, show error
-    // if (!isWordInWordList(currentGuess)) {
-    //   setCurrentRowClass("jiggle");
-    //   return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
-    //     onClose: () => {
-    //       setCurrentRowClass("");
-    //     },
-    //   });
-    // }
+    const delayMs = REVEAL_TIME_MS * message.length;
 
     // play reveal animation
     setIsRevealing(true);
     setTimeout(() => {
       setIsRevealing(false);
-    }, REVEAL_TIME_MS * message.length);
+    }, delayMs);
+
+    // if guess is correct, show success and set game won
+    if (message === currentGuess) {
+      setIsGameWon(true);
+      showSuccessAlert(
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)],
+        {
+          delayMs,
+        }
+      );
+    }
 
     // add guess to guesses
     setGuesses([...guesses, currentGuess]);
     setCurrentGuess("");
-
-    // if guess is correct, set game won
-    if (message === currentGuess) {
-      return setIsGameWon(true);
-    }
   };
 
   return (
@@ -179,6 +198,8 @@ function App() {
         <Navbar
           isInfoModalOpen={isInfoModalOpen}
           setIsInfoModalOpen={setIsInfoModalOpen}
+          isShareModalOpen={isShareModalOpen}
+          setIsShareModalOpen={setIsShareModalOpen}
         />
         <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 lg:px-8 short:pb-2">
           <Grid
@@ -202,6 +223,10 @@ function App() {
             handleDarkMode={handleDarkMode}
             isAccessibleMode={isAccessibleMode}
             handleAccessibleMode={handleAccessibleMode}
+          />
+          <ShareModal
+            isOpen={isShareModalOpen}
+            handleClose={() => setIsShareModalOpen(false)}
           />
           <AlertContainer />
         </div>
