@@ -1,6 +1,6 @@
 # Hidle
 
-This is a wordle variation that allows you to hide a message and share it with people. The name Hidle is a word play of "Hide" with the customary suffix "-dle".
+This is a wordle variation that allows you to hide your message and share it with people for them to guess. The name Hidle is a word play of "Hide" with the customary suffix "-dle".
 
 Made using React, Typescript, and Tailwind.
 
