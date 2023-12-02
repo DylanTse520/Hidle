@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { useParams } from "react-router-dom";
+import { MemoryRouter, useParams } from "react-router-dom";
 
 import App from "./App";
 
@@ -21,7 +21,12 @@ test("renders App component", () => {
   // Mock the useParams hook
   (useParams as jest.Mock).mockReturnValue({ code: "X0RALT01fRg" });
 
-  render(<App />);
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
+
   const linkElement = screen.getByText("Hidle");
   expect(linkElement).toBeInTheDocument();
 });
