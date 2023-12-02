@@ -28,6 +28,9 @@ import {
 
 function App() {
   const metaThemeColor = document.querySelector("meta[name='theme-color']");
+  const prefersDarkMode = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
 
   const WIN_MESSAGES = useMemo(
     () => ["You got it!", "Great job!", "Well done!"],
@@ -41,21 +44,21 @@ function App() {
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert();
 
+  const [guesses, setGuesses] = useState<string[]>([]);
   const [currentGuess, setCurrentGuess] = useState("");
   const [currentRowClass, setCurrentRowClass] = useState("");
   const [isGameWon, setIsGameWon] = useState(false);
+  const [isRevealing, setIsRevealing] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches
+      : prefersDarkMode
   );
   const [isAccessibleMode, setAccessibleMode] = useState(
     getStoredAccessibleMode()
   );
-  const [isRevealing, setIsRevealing] = useState(false);
-  const [guesses, setGuesses] = useState<string[]>([]);
 
   useEffect(() => {
     if (!code) {
@@ -112,6 +115,15 @@ function App() {
       );
     }
   }, [WIN_MESSAGES, guesses, isGameWon, message, showSuccessAlert]);
+
+  useEffect(() => {
+    // if system theme changes and no theme is stored, set theme to system theme
+    setIsDarkMode(
+      localStorage.getItem("theme")
+        ? localStorage.getItem("theme") === "dark"
+        : prefersDarkMode
+    );
+  }, [prefersDarkMode]);
 
   useEffect(() => {
     // set dark mode and theme color
