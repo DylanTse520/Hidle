@@ -76,7 +76,7 @@ function App() {
       const loaded = loadGameStateFromLocalStorage();
       if (!loaded) {
         // if no game state is found, save game state to local storage
-        saveGameStateToLocalStorage(new Map([[code!, guesses]]));
+        saveGameStateToLocalStorage(new Map([[code!, []]]));
         // show welcome info modal
         setTimeout(() => {
           setIsInfoModalOpen(true);
@@ -84,16 +84,19 @@ function App() {
       } else {
         const storedGuesses = loaded.get(code);
         if (!storedGuesses) {
-          // if no stored game state is found, save game state to local storage
+          // if no stored game state is found, set game state to empty array
           loaded.set(code!, []);
           saveGameStateToLocalStorage(loaded);
-        } else if (storedGuesses.length < guesses.length) {
-          // if stored game state is shorter, update stored game state
-          loaded.set(code!, guesses);
-          saveGameStateToLocalStorage(loaded);
-        } else if (storedGuesses.length > guesses.length) {
-          // if stored game state is shorter, update guesses
-          setGuesses(loaded.get(code)!);
+          setGuesses([]);
+        } else {
+          if (storedGuesses.length < guesses.length) {
+            // if stored game state is shorter, update stored game state
+            loaded.set(code!, guesses);
+            saveGameStateToLocalStorage(loaded);
+          } else if (storedGuesses.length > guesses.length) {
+            // if stored game state is shorter, update guesses
+            setGuesses(loaded.get(code)!);
+          }
         }
       }
     }

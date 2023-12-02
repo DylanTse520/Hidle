@@ -6,7 +6,9 @@ import {
   InformationCircleIcon as InformationSolid,
   PlusCircleIcon as PlusSolid,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { VALID_GUESSES } from "src/constants/validGuesses";
+import { encode, localeAwareUpperCase } from "src/utils/words";
 
 export const Navbar = ({
   isInfoModalOpen,
@@ -19,21 +21,26 @@ export const Navbar = ({
   isShareModalOpen: boolean;
   setIsShareModalOpen: (value: boolean) => void;
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="pb-4">
       <div className="flex-center flex h-12 items-center justify-between px-5 short:h-8">
-        <Link
-          to="/"
+        <h1
           className="text-xl font-bold leading-5 focus-visible:rounded
           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4
           focus-visible:outline-indigo-600 dark:text-white dark:focus-visible:outline-indigo-400"
-          role="heading"
-          aria-level={1}
           title="Guess a random new message"
           tabIndex={0}
+          role="button"
+          onClick={() => {
+            const randomWord =
+              VALID_GUESSES[Math.floor(Math.random() * VALID_GUESSES.length)];
+            navigate("/" + encode(localeAwareUpperCase(randomWord)));
+          }}
         >
           Hidle
-        </Link>
+        </h1>
         <div className="flex gap-3">
           <div
             className="icon-group group"
