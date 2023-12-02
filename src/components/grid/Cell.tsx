@@ -29,7 +29,7 @@ export const Cell = ({
     if (shouldReveal && cellRef.current) {
       setTimeout(
         () => {
-          cellRef.current!.scrollIntoView();
+          cellRef.current?.scrollIntoView();
         },
         (position - 1) * REVEAL_TIME_MS
       );

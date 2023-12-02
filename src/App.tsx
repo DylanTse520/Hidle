@@ -83,9 +83,12 @@ function App() {
         }, WELCOME_INFO_MODAL_MS);
       } else {
         const storedGuesses = loaded.get(code);
-        if (!storedGuesses || storedGuesses.length < guesses.length) {
-          // if no stored game state is found
-          // or if stored game state is shorter, update stored game state
+        if (!storedGuesses) {
+          // if no stored game state is found, save game state to local storage
+          loaded.set(code!, []);
+          saveGameStateToLocalStorage(loaded);
+        } else if (storedGuesses.length < guesses.length) {
+          // if stored game state is shorter, update stored game state
           loaded.set(code!, guesses);
           saveGameStateToLocalStorage(loaded);
         } else if (storedGuesses.length > guesses.length) {
