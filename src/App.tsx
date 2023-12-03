@@ -70,12 +70,16 @@ function App() {
     } else {
       // if code is given, set message to decoded code
       setMessage(decode(code));
+      // clear current guess and guesses
+      setCurrentGuess("");
+      setGuesses([]);
     }
   }, [code, navigate, setMessage]);
 
   useEffect(() => {
+    // this useEffect loads game state from local storage
     if (code) {
-      // load game state from local storage
+      // read local storage
       const loaded = loadGameStateFromLocalStorage();
       if (!loaded) {
         // if no game state is found, save game state to local storage
@@ -85,21 +89,15 @@ function App() {
           setIsInfoModalOpen(true);
         }, WELCOME_INFO_MODAL_MS);
       } else {
+        // if game state is found, get stored guesses
         const storedGuesses = loaded.get(code);
         if (!storedGuesses) {
-          // if no stored game state is found, set game state to empty array
+          // if no stored guesses is found, save empty guesses to local storage
           loaded.set(code!, []);
           saveGameStateToLocalStorage(loaded);
-          setGuesses([]);
         } else {
-          if (storedGuesses.length < guesses.length) {
-            // if stored game state is shorter, update stored game state
-            loaded.set(code!, guesses);
-            saveGameStateToLocalStorage(loaded);
-          } else if (storedGuesses.length > guesses.length) {
-            // if stored game state is shorter, update guesses
-            setGuesses(loaded.get(code)!);
-          }
+          // if stored guesses is found, set guesses to stored guesses
+          setGuesses(storedGuesses);
         }
       }
     }
@@ -187,6 +185,16 @@ function App() {
       });
     }
 
+    // update guesses
+    const newGuesses = [...guesses, currentGuess];
+    setGuesses(newGuesses);
+    // clear current guess
+    setCurrentGuess("");
+    // update game state
+    const loaded = loadGameStateFromLocalStorage();
+    loaded!.set(code!, newGuesses);
+    saveGameStateToLocalStorage(loaded!);
+
     const delayMs = REVEAL_TIME_MS * message.length;
 
     // play reveal animation
@@ -205,10 +213,6 @@ function App() {
         }
       );
     }
-
-    // add guess to guesses
-    setGuesses([...guesses, currentGuess]);
-    setCurrentGuess("");
   };
 
   return (
