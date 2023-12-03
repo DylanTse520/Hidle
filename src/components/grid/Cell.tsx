@@ -1,8 +1,8 @@
 import classnames from "classnames";
 import { useEffect, useRef } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
-import { getStoredAccessibleMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
+import { loadAccessibleMode } from "src/utils/storage";
 
 export const Cell = ({
   value,
@@ -20,7 +20,7 @@ export const Cell = ({
   const isFilled = value && !isCompleted;
   const shouldReveal = isRevealing && isCompleted;
   const animationDelay = `${position * REVEAL_TIME_MS}ms`;
-  const isAccessibleMode = getStoredAccessibleMode();
+  const isAccessibleMode = loadAccessibleMode();
 
   const cellRef = useRef<HTMLDivElement>(null);
 

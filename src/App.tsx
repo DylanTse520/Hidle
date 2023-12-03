@@ -14,11 +14,13 @@ import { VALID_GUESSES } from "./constants/validGuesses";
 import { useAlert } from "./context/AlertContext";
 import { useMessage } from "./context/MessageContext";
 import {
-  getStoredAccessibleMode,
-  loadGameStateFromLocalStorage,
-  saveGameStateToLocalStorage,
-  setStoredAccessibleMode,
-} from "./utils/localStorage";
+  loadAccessibleMode,
+  loadDarkMode,
+  loadGameState,
+  saveAccessibleMode,
+  saveDarkMode,
+  saveGameState,
+} from "./utils/storage";
 import {
   decode,
   encode,
@@ -27,8 +29,6 @@ import {
 } from "./utils/words";
 
 function App() {
-  const metaThemeColor = document.querySelector("meta[name='theme-color']");
-
   const WIN_MESSAGES = useMemo(
     () => ["You got it!", "Great job!", "Well done!"],
     []
@@ -36,7 +36,6 @@ function App() {
 
   const { code } = useParams();
   const navigate = useNavigate();
-
   const { message, setMessage } = useMessage();
   const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
     useAlert();
@@ -48,14 +47,8 @@ function App() {
   const [isRevealing, setIsRevealing] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme")
-      ? localStorage.getItem("theme") === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
-  const [isAccessibleMode, setAccessibleMode] = useState(
-    getStoredAccessibleMode()
-  );
+  const [isDarkMode, setIsDarkMode] = useState(loadDarkMode());
+  const [isAccessibleMode, setAccessibleMode] = useState(loadAccessibleMode());
 
   useEffect(() => {
     if (!code) {
@@ -77,10 +70,10 @@ function App() {
     // this useEffect loads game state from local storage
     if (code) {
       // read local storage
-      const loaded = loadGameStateFromLocalStorage();
+      const loaded = loadGameState();
       if (!loaded) {
         // if no game state is found, save game state to local storage
-        saveGameStateToLocalStorage(new Map([[code!, []]]));
+        saveGameState(new Map([[code!, []]]));
         // show welcome info modal
         setTimeout(() => {
           setIsInfoModalOpen(true);
@@ -91,7 +84,7 @@ function App() {
         if (!storedGuesses) {
           // if no stored guesses is found, save empty guesses to local storage
           loaded.set(code!, []);
-          saveGameStateToLocalStorage(loaded);
+          saveGameState(loaded);
         } else if (storedGuesses.length > guesses.length) {
           // if stored guesses is found, set guesses to stored guesses
           setGuesses(storedGuesses);
@@ -112,24 +105,17 @@ function App() {
   }, [WIN_MESSAGES, guesses, isGameWon, message, showSuccessAlert]);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
     const handleChange = () => {
-      setIsDarkMode(
-        // if system theme changes and no theme is stored, set theme to system theme
-        localStorage.getItem("theme")
-          ? localStorage.getItem("theme") === "dark"
-          : mediaQuery.matches
-      );
+      setIsDarkMode(loadDarkMode());
     };
-
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     mediaQuery.addEventListener("change", handleChange);
-
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   useEffect(() => {
     // set dark mode and theme color
+    const metaThemeColor = document.querySelector("meta[name='theme-color']");
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
       metaThemeColor?.setAttribute("content", "#0F172A");
@@ -144,16 +130,16 @@ function App() {
     } else {
       document.documentElement.classList.remove("accessible");
     }
-  }, [isDarkMode, isAccessibleMode, metaThemeColor]);
+  }, [isDarkMode, isAccessibleMode]);
 
-  const handleDarkMode = (isDark: boolean) => {
-    setIsDarkMode(isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+  const handleDarkMode = (isDarkMode: boolean) => {
+    setIsDarkMode(isDarkMode);
+    saveDarkMode(isDarkMode);
   };
 
   const handleAccessibleMode = (isAccessibleMode: boolean) => {
     setAccessibleMode(isAccessibleMode);
-    setStoredAccessibleMode(isAccessibleMode);
+    saveAccessibleMode(isAccessibleMode);
   };
 
   const onChar = (value: string) => {
@@ -196,9 +182,9 @@ function App() {
     // clear current guess
     setCurrentGuess("");
     // update game state
-    const loaded = loadGameStateFromLocalStorage();
+    const loaded = loadGameState();
     loaded!.set(code!, newGuesses);
-    saveGameStateToLocalStorage(loaded!);
+    saveGameState(loaded!);
 
     const delayMs = REVEAL_TIME_MS * message.length;
 

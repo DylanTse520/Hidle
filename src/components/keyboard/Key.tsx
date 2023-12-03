@@ -2,8 +2,8 @@ import classnames from "classnames";
 import { ReactNode } from "react";
 import { REVEAL_TIME_MS } from "src/constants/settings";
 import { useMessage } from "src/context/MessageContext";
-import { getStoredAccessibleMode } from "src/utils/localStorage";
 import { CharStatus } from "src/utils/statuses";
+import { loadAccessibleMode } from "src/utils/storage";
 
 export const Key = ({
   children,
@@ -23,7 +23,7 @@ export const Key = ({
   const { message } = useMessage();
 
   const keyDelayMs = REVEAL_TIME_MS * message.length;
-  const isAccessibleMode = getStoredAccessibleMode();
+  const isAccessibleMode = loadAccessibleMode();
 
   const classes = classnames(
     `xxshort:h-8 xxshort:w-8 xxshort:text-xxs

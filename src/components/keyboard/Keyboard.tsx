@@ -53,9 +53,7 @@ export const Keyboard = ({
       }
     };
     window.addEventListener("keyup", handleKeyPress);
-    return () => {
-      window.removeEventListener("keyup", handleKeyPress);
-    };
+    return () => window.removeEventListener("keyup", handleKeyPress);
   }, [onEnter, onDelete, onChar]);
 
   return (
