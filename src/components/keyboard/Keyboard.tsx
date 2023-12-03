@@ -38,22 +38,23 @@ export const Keyboard = ({
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         (document.activeElement as HTMLElement).blur();
-      }
-      if (e.code === "Enter") {
+      } else if (e.code === "Enter") {
         if (document.activeElement === document.body) {
           onEnter();
         }
       } else if (e.code === "Backspace") {
+        (document.activeElement as HTMLElement).blur();
         onDelete();
       } else {
         const key = localeAwareUpperCase(e.key);
         if (key.length === 1 && key >= "A" && key <= "Z") {
+          (document.activeElement as HTMLElement).blur();
           onChar(key);
         }
       }
     };
-    window.addEventListener("keyup", handleKeyPress);
-    return () => window.removeEventListener("keyup", handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
   }, [onEnter, onDelete, onChar]);
 
   return (

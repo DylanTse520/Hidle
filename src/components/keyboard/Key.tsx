@@ -59,10 +59,9 @@ export const Key = ({
       style={styles}
       aria-label={`${value}${status ? " " + status : ""}`}
       className={classes}
-      tabIndex={1}
+      tabIndex={0}
       onClick={() => {
         onClick(value);
-        (document.activeElement as HTMLElement).blur();
       }}
       onKeyDown={(e) => {
         if (e.key === "Enter") {

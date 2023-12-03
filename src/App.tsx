@@ -155,9 +155,14 @@ function App() {
   };
 
   const onDelete = () => {
-    setCurrentGuess(
-      new GraphemeSplitter().splitGraphemes(currentGuess).slice(0, -1).join("")
-    );
+    if (!isInfoModalOpen && !isShareModalOpen) {
+      setCurrentGuess(
+        new GraphemeSplitter()
+          .splitGraphemes(currentGuess)
+          .slice(0, -1)
+          .join("")
+      );
+    }
   };
 
   const onEnter = () => {

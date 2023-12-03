@@ -37,11 +37,10 @@ export const Navbar = ({
           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4
           focus-visible:outline-indigo-600 dark:text-white dark:focus-visible:outline-indigo-400"
           title="Guess a random new message"
-          tabIndex={0}
+          tabIndex={2}
           role="button"
           onClick={() => {
             handleHeaderClick();
-            (document.activeElement as HTMLElement).blur();
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -54,10 +53,9 @@ export const Navbar = ({
         <div className="flex gap-3">
           <div
             className="icon-group group"
-            tabIndex={2}
+            tabIndex={1}
             onClick={() => {
               setIsInfoModalOpen(true);
-              (document.activeElement as HTMLElement).blur();
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -81,10 +79,9 @@ export const Navbar = ({
           </div>
           <div
             className="icon-group group"
-            tabIndex={2}
+            tabIndex={1}
             onClick={() => {
               setIsShareModalOpen(true);
-              (document.activeElement as HTMLElement).blur();
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
