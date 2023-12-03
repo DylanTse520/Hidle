@@ -50,7 +50,10 @@ export const BaseModal = ({ title, children, isOpen, handleClose }: Props) => {
                 <div
                   className="icon-group group"
                   tabIndex={0}
-                  onClick={() => handleClose()}
+                  onClick={() => {
+                    handleClose();
+                    (document.activeElement as HTMLElement).blur();
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       handleClose();

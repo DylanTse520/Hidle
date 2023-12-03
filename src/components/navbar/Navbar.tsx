@@ -23,6 +23,12 @@ export const Navbar = ({
 }) => {
   const navigate = useNavigate();
 
+  const handleHeaderClick = () => {
+    const randomWord =
+      VALID_GUESSES[Math.floor(Math.random() * VALID_GUESSES.length)];
+    navigate("/" + encode(localeAwareUpperCase(randomWord)));
+  };
+
   return (
     <div className="pb-4">
       <div className="flex-center flex h-12 items-center justify-between px-5 short:h-8">
@@ -34,9 +40,13 @@ export const Navbar = ({
           tabIndex={0}
           role="button"
           onClick={() => {
-            const randomWord =
-              VALID_GUESSES[Math.floor(Math.random() * VALID_GUESSES.length)];
-            navigate("/" + encode(localeAwareUpperCase(randomWord)));
+            handleHeaderClick();
+            (document.activeElement as HTMLElement).blur();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleHeaderClick();
+            }
           }}
         >
           Hidle
@@ -45,7 +55,10 @@ export const Navbar = ({
           <div
             className="icon-group group"
             tabIndex={2}
-            onClick={() => setIsInfoModalOpen(true)}
+            onClick={() => {
+              setIsInfoModalOpen(true);
+              (document.activeElement as HTMLElement).blur();
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setIsInfoModalOpen(true);
@@ -69,7 +82,10 @@ export const Navbar = ({
           <div
             className="icon-group group"
             tabIndex={2}
-            onClick={() => setIsShareModalOpen(true)}
+            onClick={() => {
+              setIsShareModalOpen(true);
+              (document.activeElement as HTMLElement).blur();
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 setIsShareModalOpen(true);
