@@ -92,7 +92,7 @@ function App() {
           // if no stored guesses is found, save empty guesses to local storage
           loaded.set(code!, []);
           saveGameStateToLocalStorage(loaded);
-        } else {
+        } else if (storedGuesses.length > guesses.length) {
           // if stored guesses is found, set guesses to stored guesses
           setGuesses(storedGuesses);
         }

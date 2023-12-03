@@ -3,7 +3,7 @@ import { MemoryRouter, useParams } from "react-router-dom";
 
 import App from "./App";
 
-// Mock the module that contains useParams
+// Mock the module that contains useParams and useNavigate
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: jest.fn(),
@@ -12,7 +12,9 @@ jest.mock("react-router-dom", () => ({
 
 beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
-    value: jest.fn().mockImplementation((query) => ({})),
+    value: jest.fn().mockImplementation((query) => ({
+      addEventListener: jest.fn(),
+    })),
   });
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
 });
