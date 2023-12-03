@@ -35,7 +35,7 @@ export const Keyboard = ({
   };
 
   useEffect(() => {
-    const listener = (e: KeyboardEvent) => {
+    const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         (document.activeElement as HTMLElement).blur();
       }
@@ -52,9 +52,9 @@ export const Keyboard = ({
         }
       }
     };
-    window.addEventListener("keyup", listener);
+    window.addEventListener("keyup", handleKeyPress);
     return () => {
-      window.removeEventListener("keyup", listener);
+      window.removeEventListener("keyup", handleKeyPress);
     };
   }, [onEnter, onDelete, onChar]);
 

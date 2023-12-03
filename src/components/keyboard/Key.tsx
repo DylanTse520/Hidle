@@ -54,16 +54,23 @@ export const Key = ({
   };
 
   return (
-    <button
+    <div
+      role="button"
       style={styles}
       aria-label={`${value}${status ? " " + status : ""}`}
       className={classes}
       tabIndex={1}
       onClick={() => {
         onClick(value);
+        (document.activeElement as HTMLElement).blur();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          onClick(value);
+        }
       }}
     >
       {children || value}
-    </button>
+    </div>
   );
 };
