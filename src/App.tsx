@@ -28,9 +28,6 @@ import {
 
 function App() {
   const metaThemeColor = document.querySelector("meta[name='theme-color']");
-  const prefersDarkMode = window.matchMedia(
-    "(prefers-color-scheme: dark)"
-  ).matches;
 
   const WIN_MESSAGES = useMemo(
     () => ["You got it!", "Great job!", "Well done!"],
@@ -54,7 +51,7 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem("theme")
       ? localStorage.getItem("theme") === "dark"
-      : prefersDarkMode
+      : window.matchMedia("(prefers-color-scheme: dark)").matches
   );
   const [isAccessibleMode, setAccessibleMode] = useState(
     getStoredAccessibleMode()
@@ -115,13 +112,21 @@ function App() {
   }, [WIN_MESSAGES, guesses, isGameWon, message, showSuccessAlert]);
 
   useEffect(() => {
-    // if system theme changes and no theme is stored, set theme to system theme
-    setIsDarkMode(
-      localStorage.getItem("theme")
-        ? localStorage.getItem("theme") === "dark"
-        : prefersDarkMode
-    );
-  }, [prefersDarkMode]);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = () => {
+      setIsDarkMode(
+        // if system theme changes and no theme is stored, set theme to system theme
+        localStorage.getItem("theme")
+          ? localStorage.getItem("theme") === "dark"
+          : mediaQuery.matches
+      );
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
     // set dark mode and theme color
