@@ -14,6 +14,7 @@ beforeEach(() => {
   Object.defineProperty(window, "matchMedia", {
     value: jest.fn().mockImplementation((query) => ({
       addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
     })),
   });
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
