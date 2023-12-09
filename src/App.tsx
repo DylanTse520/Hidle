@@ -234,6 +234,7 @@ function App() {
             onEnter={onEnter}
             guesses={guesses}
             isRevealing={isRevealing}
+            isModalOpen={isInfoModalOpen || isShareModalOpen}
           />
           <InfoModal
             isOpen={isInfoModalOpen}

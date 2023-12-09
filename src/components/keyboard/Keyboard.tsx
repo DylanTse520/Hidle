@@ -13,12 +13,14 @@ export const Keyboard = ({
   onEnter,
   guesses,
   isRevealing,
+  isModalOpen,
 }: {
   onChar: (value: string) => void;
   onDelete: () => void;
   onEnter: () => void;
   guesses: string[];
-  isRevealing?: boolean;
+  isRevealing: boolean;
+  isModalOpen: boolean;
 }) => {
   const { message } = useMessage();
 
@@ -36,6 +38,9 @@ export const Keyboard = ({
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      if (isModalOpen) {
+        return;
+      }
       if (e.code === "Escape") {
         (document.activeElement as HTMLElement).blur();
       } else if (e.code === "Enter") {
@@ -55,7 +60,7 @@ export const Keyboard = ({
     };
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [onEnter, onDelete, onChar]);
+  }, [onEnter, onDelete, onChar, isModalOpen]);
 
   return (
     <div>
