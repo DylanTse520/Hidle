@@ -3,8 +3,6 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --animation-speed: 1000ms;
-  --animation-speed-fast: 250ms;
   --default-cell-bg-color: theme("colors.white");
   --default-cell-border-color: theme("colors.black");
   --default-cell-text-color: theme("colors.black");
@@ -67,7 +65,7 @@
 
 .jiggle {
   animation: jiggle linear;
-  animation-duration: var(--animation-speed-fast);
+  animation-duration: 250ms;
 }
 
 @keyframes revealAbsentCharCell {
