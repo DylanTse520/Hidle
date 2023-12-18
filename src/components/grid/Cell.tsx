@@ -40,8 +40,8 @@ export const Cell = ({
     "mx-0.5 xshort:w-11 xshort:h-11 short:text-2xl short:w-12 short:h-12 w-14 h-14 border-solid border-2 flex items-center justify-center text-4xl font-bold rounded dark:text-white",
     {
       "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-600":
-        !status,
-      "border-black dark:border-slate-100": value && !status,
+        !value && !status,
+      "border-slate-700 dark:border-slate-100": value && !status,
       "absent shadowed bg-slate-400 dark:bg-slate-700 text-white border-slate-400 dark:border-slate-700":
         status === "absent",
       "correct shadowed bg-cyan-500 text-white underline decoration-solid border-cyan-500":
