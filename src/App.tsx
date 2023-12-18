@@ -220,7 +220,7 @@ function App() {
           isShareModalOpen={isShareModalOpen}
           setIsShareModalOpen={setIsShareModalOpen}
         />
-        <div className="content-height flex w-full flex-col px-1 pb-8 sm:px-6 lg:px-8 short:pb-2">
+        <div className="min-w=[20rem] flex h-[calc(100vh-4rem-1px)] min-h-[25.5rem] w-full flex-col px-1 pb-8 sm:px-6 lg:px-8 short:h-[calc(100vh-3rem-1px)] short:pb-2">
           <Grid
             guesses={guesses}
             currentGuess={currentGuess}
