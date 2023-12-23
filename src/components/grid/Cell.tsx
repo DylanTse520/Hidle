@@ -1,6 +1,8 @@
 import classnames from "classnames";
 import { useEffect, useRef } from "react";
+import { scrollIntoView } from "seamless-scroll-polyfill";
 import { REVEAL_TIME_MS } from "src/constants/settings";
+import { isDesktopSafari } from "src/utils/broswer";
 import { CharStatus } from "src/utils/statuses";
 import { loadAccessibleMode } from "src/utils/storage";
 
@@ -29,9 +31,25 @@ export const Cell = ({
     if (shouldReveal && cellRef.current) {
       setTimeout(
         () => {
-          cellRef.current?.scrollIntoView({ behavior: "smooth" });
+          if (isDesktopSafari()) {
+            scrollIntoView(
+              cellRef.current!,
+              {
+                behavior: "smooth",
+              },
+              {
+                duration: 350,
+              }
+            );
+          } else {
+            cellRef.current?.scrollIntoView({ behavior: "smooth" });
+          }
         },
-        (position - 1) * REVEAL_TIME_MS
+        // if position is 0, move to the cell immediately
+        // else move to the next cell
+        position <= 1
+          ? position * REVEAL_TIME_MS
+          : (position - 1) * REVEAL_TIME_MS
       );
     }
   }, [position, shouldReveal]);

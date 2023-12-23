@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
+    "seamless-scroll-polyfill": "^2.3.4",
     "ua-parser-js": "^1.0.35",
     "web-vitals": "^3.4.0"
   },

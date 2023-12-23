@@ -1,6 +1,8 @@
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
+import { scrollIntoView } from "seamless-scroll-polyfill";
 import { useMessage } from "src/context/MessageContext";
+import { isDesktopSafari } from "src/utils/broswer";
 import { unicodeSplit } from "src/utils/words";
 
 import { Cell } from "./Cell";
@@ -22,9 +24,19 @@ export const CurrentRow = ({
   const emptyCells = new Array(message.length - splitGuess.length).fill(0);
 
   useEffect(() => {
-    // scroll into view when revealing
+    // scroll into view when typing
     if (currentCellRef.current) {
-      currentCellRef.current!.scrollIntoView({ behavior: "smooth" });
+      if (isDesktopSafari()) {
+        scrollIntoView(
+          currentCellRef.current,
+          { behavior: "smooth" },
+          {
+            duration: 350,
+          }
+        );
+      } else {
+        currentCellRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   });
 
