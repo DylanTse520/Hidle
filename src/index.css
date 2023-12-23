@@ -84,6 +84,12 @@
     background-color: var(--absent-cell-bg-color);
     border-color: var(--absent-cell-bg-color);
   }
+  95% {
+    transform: rotateX(180deg);
+  }
+  98% {
+    transform: rotateX(190deg);
+  }
   100% {
     transform: rotateX(180deg);
   }
@@ -105,8 +111,14 @@
     background-color: var(--correct-cell-bg-color);
     border-color: var(--correct-cell-bg-color);
   }
-  100% {
+  95% {
     transform: rotateX(180deg);
+  }
+  98% {
+    transform: rotateX(190deg);
+  }
+  100% {
+    transform: rotateX(270deg);
   }
 }
 
@@ -125,6 +137,12 @@
   50.1% {
     background-color: var(--present-cell-bg-color);
     border-color: var(--present-cell-bg-color);
+  }
+  95% {
+    transform: rotateX(180deg);
+  }
+  98% {
+    transform: rotateX(190deg);
   }
   100% {
     transform: rotateX(180deg);

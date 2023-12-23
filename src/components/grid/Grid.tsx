@@ -23,9 +23,9 @@ export const Grid = ({
   ).fill(0);
 
   return (
-    <div className="mb-6 flex grow flex-col overflow-auto short:mb-2">
+    <div className="flex grow flex-col overflow-auto">
       <div className="flex grow">
-        <div className="flex grow flex-col justify-center gap-1">
+        <div className="mb-6 flex grow flex-col justify-center gap-1 short:mb-2">
           {
             // all guesses are mapped to completed rows
             guesses.map((guess, i) => (
